@@ -1,4 +1,4 @@
-# Wireshark Lab1
+# Wireshark Lab2
 
 ## Questions
 1. HTTP Version Browser `1.1` Server `1.1`
