@@ -62,29 +62,29 @@
 
 ## Q3
 - [ ] **wrong** non persistent, single segment, 2 http requests
-- [ ] **wrong**3 files. one request, 3 answers
+- [ ] **wrong** 3 files. one request, 3 answers
 - [] ?? distinct webpages over one connection possible
   - alywas or sometimes possible???
-- [ ] **wrong**date-field in http response indicates last modified
+- [ ] **wrong** date-field in http response indicates last modified
 - [ ] **wrong** client connects to server on execution of .exe
 - [x] **true** mail and webserver can have the same alias (use different ports)
 - [x] **true** FTP uses two parallel TCP connections, 1 control, 1 data
 - [ ] **wrong** cookie is used for encryption
   - well, its possible, but unsafe
-- [] ?? SMTP uses handshaking at Application layer, HTTP does not
+- [x] **true** SMTP uses handshaking at Application layer, HTTP does not
 - [ ] **wrong** Web caching can reduce the delay for uncached objects 
-- [x] **true**TCP provides reliable bytestream between C,S, UDP does not 
-- [ ] **wrong** TCP and UDP guarantee certain througout
+- [x] **true** TCP provides reliable byte-stream between C,S, UDP does not 
+- [ ] **wrong** TCP and UDP guarantee certain throughput
 - [x] **true** neither TCP nor UDP guarantee delivery within `time t`
 - [] ?? TCP provides security while UDP does not
   - TCP with SSL does, but TCP on its own: no
 - [ ] **wrong** SSL operates at the application layer
 - [ ] **wrong** to do transaction as fast as possible: use TCP, not UDP
-- [] ?? **wrong** in P2P file sharing there is no notion of client/server sides in a communication session
+- [ ] **wrong** in P2P file sharing there is no notion of client/server sides in a communication session
   - yes, there is. the starting is always the client(definition from book)
 - [x] **true** IP&Port used by a process on A to identify process on B
 - [ ] **false** NNTP, SMTP, Remote Login are proprietary protocols.
-- [ ] **wrong**Video Streaming and Instant Messaging are apps not suitable for P2P architectures
+- [ ] **wrong** Video Streaming and Instant Messaging are apps not suitable for P2P architectures
   - Chats often use P2P
   
 ## Q4 Web Caching 2
@@ -107,7 +107,7 @@
 - ANSWER2 `Tr ~ 1.272 sec`
 - **COMPLETE ANSWER** `Tr_miss = 2.12; Tr = 1.272 sec`
 
-## Q5 Web Caching 2
+## Q5 Web Caching 1
 - access link `R_acc = 15Mb/s`
 - LAN `R_lan = 100Mb/s`
 - Avg object size `F = 9e5 bits`
