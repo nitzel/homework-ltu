@@ -76,9 +76,9 @@
 - [x] **true** TCP provides reliable byte-stream between C,S, UDP does not 
 - [ ] **wrong** TCP and UDP guarantee certain throughput
 - [x] **true** neither TCP nor UDP guarantee delivery within `time t`
-- [] ?? TCP provides security while UDP does not
+- [x] **true** TCP provides security while UDP does not
   - TCP with SSL does, but TCP on its own: no
-- [ ] **wrong** SSL operates at the application layer
+- [x] **true** SSL operates at the application layer
 - [ ] **wrong** to do transaction as fast as possible: use TCP, not UDP
 - [ ] **wrong** in P2P file sharing there is no notion of client/server sides in a communication session
   - yes, there is. the starting is always the client(definition from book)
