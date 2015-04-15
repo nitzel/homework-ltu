@@ -5,7 +5,7 @@
 
 -- data to play with
 l1 = [4,6,7,98,3,1,2,9,54,3,1,2,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4] :: [Int]
-l2 = [1,4,2,-1,3] :: [Int]
+l2 = [1,4,2,-1,3,1,4,2,-1,3] :: [Int]
 
 -- first element of triple
 el0 :: (Int,Int,Int) -> Int
@@ -16,12 +16,12 @@ sum' [] = 0
 sum' (x:xs) = x + sum' xs
 
 --remove a from list [a]
-remove :: [(Int,Int,Int)] -> (Int,Int,Int) -> [(Int,Int,Int)]
-remove [] _ = []
-remove (x:xs) y = if x == y then remove xs y else x:(remove xs y)
+--remove :: [(Int,Int,Int)] -> (Int,Int,Int) -> [(Int,Int,Int)]
+--remove [] _ = []
+--remove (x:xs) y = if x == y then remove xs y else x:(remove xs y)
 
 -- remove element from list
-removeFrom :: Int -> [Int] -> [Int]
+removeFrom :: Eq a => a -> [a] -> [a]
 removeFrom _ [] = []
 removeFrom v (x:xs) = if x==v then removeFrom v xs else x: removeFrom v xs
 
@@ -59,15 +59,15 @@ maxTrip = maxTrip' (0,0,0)
 kmaxsubunique' :: [(Int, Int, Int)] -> Int -> [(Int, Int, Int)]
 kmaxsubunique' _ 0 = []
 kmaxsubunique' [] _ = []
-kmaxsubunique' xs k = maxsubset : kmaxsubunique' (remove xs maxsubset) (k-1) 
+kmaxsubunique' xs k = maxsubset : kmaxsubunique' (removeFrom maxsubset xs) (k-1) 
   where maxsubset = maxTrip xs
 
 -- make the list consist only of unique elements
 -- and get the k maximal subsequences as triples (v, i, j)
 kmaxsubunique :: [Int] -> Int -> [(Int, Int, Int)]
-kmaxsubunique xs = kmaxsubunique' (allSubs xs)
+kmaxsubunique xs = kmaxsubunique' (allSubs (initFilter xs))
 
 -- autostart kmaxsubunique :)
-main = print (kmaxsubunique l2 3)
+main = print (kmaxsubunique l2 30)
 
 
