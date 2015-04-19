@@ -1,4 +1,3 @@
-Chapter 3 completion: 1/2, will be completed next week
 #Chapter 3 - Transport Layer
 Summary of Chapter 3 of Computer Networking - A Top Down Approach, 6th Edition
 
