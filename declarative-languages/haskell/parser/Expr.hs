@@ -75,9 +75,11 @@ value (Num n) _ = n
 value (Add a b) dict = (value a dict) + (value b dict)
 value (Sub a b) dict = (value a dict) - (value b dict)
 value (Mul a b) dict = (value a dict) * (value b dict)
+value (Div a b) dict = if (value b dict)/=0 then (value a dict) `div` (value b dict) else error "division by 0"
 value (Var v) dict = 
                     case Dictionary.lookup v (dict) of 
                     Just nr -> nr
+                    Nothing -> error ("undefined variable "++v)
 --value (Num n) _ = error "value not implemented"
 
 instance Parse Expr where
