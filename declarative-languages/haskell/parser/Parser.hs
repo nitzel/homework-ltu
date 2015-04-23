@@ -26,10 +26,17 @@ iter m = m # iter m >-> cons ! return []
 cons(a, b) = a:b
 
 (-#) :: Parser a -> Parser b -> Parser b
-m -# n = error "-# not implemented"
+(m -# n) cs = 
+    case (m#spaces) cs of
+    Nothing -> Nothing
+    Just(a, cs') -> n cs'
+--       case n cs' of
+--       Nothing -> Nothing
+--        Just(b, cs'') -> Just((a, b), cs'')
+--m -# n = error "-# not implemented"
 
 (#-) :: Parser a -> Parser b -> Parser a
-m #- n = m
+m #- n = m -- check if correct! todo
 -- m #- n = error "#- not implemented"
 
 spaces :: Parser String
