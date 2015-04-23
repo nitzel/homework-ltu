@@ -5,19 +5,77 @@ import qualified Dictionary
 import qualified Expr
 type T = Statement
 data Statement =
-    Assignment String Expr.T |
-    If Expr.T Statement Statement
+      Assignment String Expr.T
+    | If Expr.T Statement Statement
+    | Skip
+    | Read String
+    | Write Expr.T
+    | Beginend [Statement] --Begin ... End
+    | While Expr.T Statement
     deriving Show
 
-assignment = word #- accept ":=" # Expr.parse #- require ";" >-> buildAss
+-- statements
+stmt = 
+    assignStmt
+  ! ifStmt
+  ! skipStmt
+  ! readStmt
+  ! writeStmt
+  ! beginendStmt
+  ! whileStmt
+-- define the stmt's and the corresponding build-functions
+assignStmt = word #- accept ":=" # Expr.parse #- require ";" >-> buildAss
 buildAss (v, e) = Assignment v e
 
+ifStmt = accept "if" -# Expr.parse #- require "then" # stmt #- require "else" # stmt >-> buildIf
+buildIf ((condition, statement1), statement2) = If condition statement1 statement2
+
+skipStmt = accept "skip" #- require ";" >-> buildSkip
+buildSkip _ = Skip
+
+readStmt = accept "read" -# word #- require ";" >-> buildRead
+buildRead (varname) = Read varname
+
+writeStmt = accept "write" -# Expr.parse #- require ";" >-> buildWrite
+buildWrite (expression) = Write expression
+
+beginendStmt = accept "begin" -# iter stmt #- require "end" >-> buildBegin
+buildBegin (statements) = Beginend statements
+
+whileStmt = accept "while" -# Expr.parse #- require "do" # stmt >-> buildWhile
+buildWhile (condition, statement) = While condition statement
+
+
+
+-- exec fun
 exec :: [T] -> Dictionary.T String Integer -> [Integer] -> [Integer]
 exec (If cond thenStmts elseStmts: stmts) dict input = 
     if (Expr.value cond dict)>0 
     then exec (thenStmts: stmts) dict input
     else exec (elseStmts: stmts) dict input
 
+exec (Assignment varname expression: stmts) dict input =
+    exec stmts changedDict input where changedDict = Dictionary.insert(varname, (Expr.value expression dict)) dict
+
+exec (Skip: stmts) dict input =
+    exec stmts dict input
+
+exec (Read varname: stmts) dict (input:inputQueue) =
+    exec stmts changedDict inputQueue where changedDict = Dictionary.insert(varname, input) dict
+
+exec (Write expression: stmts) dict input = 
+    [(Expr.value expression dict)] ++ (exec stmts dict input)
+    
+exec (Beginend statements:stmts) dict input = 
+    exec (statements ++ stmts) dict input -- add statements in begin/end-block to the remaining list
+    
+exec (While condition statement: stmts) dict input =
+    if (Expr.value condition dict)>0
+    then exec newStmts dict input
+    else exec stmts dict input
+    where newStmts = (statement:(While condition statement):stmts)
+exec [] dict input = [] -- recursion-end  
+  
 instance Parse Statement where
-  parse = error "Statement.parse not implemented"
+  parse = stmt --error "Statement.parse not implemented"
   toString = error "Statement.toString not implemented"
