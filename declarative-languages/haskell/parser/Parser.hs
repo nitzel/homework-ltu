@@ -29,15 +29,15 @@ cons(a, b) = a:b
 (m -# n) cs = 
     case (m#spaces) cs of
     Nothing -> Nothing
-    Just(a, cs') -> n cs'
---       case n cs' of
---       Nothing -> Nothing
---        Just(b, cs'') -> Just((a, b), cs'')
+    Just((a,b), cs') -> n cs'
 --m -# n = error "-# not implemented"
 
 (#-) :: Parser a -> Parser b -> Parser a
-m #- n = m -- check if correct! todo
--- m #- n = error "#- not implemented"
+(m #- n) cs = 
+  case (m#spaces#n) cs of
+  Nothing -> Nothing
+  Just(((a,b),c), cs') -> Just(a, cs')
+--m #- n = error "#- not implemented"
 
 spaces :: Parser String
 spaces = iter (char ? sw elem [' ','\t'])

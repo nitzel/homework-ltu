@@ -71,7 +71,14 @@ shw prec (Mul t u) = parens (prec>6) (shw 6 t ++ "*" ++ shw 6 u)
 shw prec (Div t u) = parens (prec>6) (shw 6 t ++ "/" ++ shw 7 u)
 
 value :: Expr -> Dictionary.T String Integer -> Integer
-value (Num n) _ = error "value not implemented"
+value (Num n) _ = n
+value (Add a b) dict = (value a dict) + (value b dict)
+value (Sub a b) dict = (value a dict) - (value b dict)
+value (Mul a b) dict = (value a dict) * (value b dict)
+value (Var v) dict = 
+                    case Dictionary.lookup v (dict) of 
+                    Just nr -> nr
+--value (Num n) _ = error "value not implemented"
 
 instance Parse Expr where
     parse = expr
