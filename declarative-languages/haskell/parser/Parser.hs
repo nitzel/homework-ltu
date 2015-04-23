@@ -8,6 +8,15 @@ infixl 7 -#, #-
 
 type T a = Parser a
 
+-- swap parameters for function
+sw :: (a -> b -> c) -> b -> a -> c
+sw f y x = f x y
+-- isNothing for maybe
+isNothing :: Maybe a -> Bool
+isNothing Nothing = True
+isNothing _ = False
+
+
 err :: String -> Parser a
 err message cs = error (message++" near "++cs++"\n")
 
@@ -20,16 +29,19 @@ cons(a, b) = a:b
 m -# n = error "-# not implemented"
 
 (#-) :: Parser a -> Parser b -> Parser a
-m #- n = error "#- not implemented"
+m #- n = m
+-- m #- n = error "#- not implemented"
 
 spaces :: Parser String
-spaces =  error "spaces not implemented"
+spaces = iter (char ? sw elem [' ','\t'])
+--spaces =  error "spaces not implemented"
 
 token :: Parser a -> Parser a
 token m = m #- spaces
 
 letter :: Parser Char
-letter =  error "letter not implemented"
+letter = char ? (sw elem (['A'..'Z']++['a'..'z']))
+--letter =  error "letter not implemented"
 
 word :: Parser String
 word = token (letter # iter letter >-> cons)
@@ -42,7 +54,8 @@ accept :: String -> Parser String
 accept w = (token (chars (length w))) ? (==w)
 
 require :: String -> Parser String
-require w  = error "require not implemented"
+require s t = if isNothing (accept s t) then error ("expecting "++s++" near "++t) else accept s t  
+require w t = error "require not implemented"
 
 lit :: Char -> Parser Char
 lit c = token char ? (==c)
