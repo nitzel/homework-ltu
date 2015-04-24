@@ -4,6 +4,7 @@ module TestProgram where
 import Program
 p, p1 :: Program.T
 p = fromString  ("\
+\#comments rock!\
 \read k;\
 \read n;\
 \m := 1;\

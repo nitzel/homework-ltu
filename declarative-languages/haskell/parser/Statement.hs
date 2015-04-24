@@ -75,7 +75,28 @@ exec (While condition statement: stmts) dict input =
     else exec stmts dict input
     where newStmts = (statement:(While condition statement):stmts)
 exec [] dict input = [] -- recursion-end  
-  
+
+-- printing and formatting
+format :: Int -> String -- n*2 spaces on the left, indentation
+format 0 = ""
+format l = "  "++format (l-1)
+
+printStmt :: Int -> Statement -> String
+printStmt level (Assignment var expr)   = format level ++ var ++ " := " ++ Expr.toString expr ++ ";\n"
+printStmt level (If cond stmt1 stmt2)   = format level ++ "if " ++ Expr.toString cond ++ "\n" ++ 
+                                          format level ++ "then\n" ++ 
+                                            printStmt (level+1) stmt1 ++ 
+                                          format level ++ "else\n" ++ 
+                                            printStmt (level+1) stmt2
+printStmt level (Skip)                  = format level ++ "skip;\n"
+printStmt level (Read s)                = format level ++ "read " ++ s ++ ";\n"
+printStmt level (Write s)               = format level ++ "write " ++ Expr.toString s ++ ";\n"
+printStmt level (Beginend stmts)        = format level ++ "begin\n" ++ 
+                                            concat (map(printStmt (level+1)) stmts) ++ 
+                                          format level ++ "end\n"
+printStmt level (While cond stmts)      = format level ++ "while " ++ Expr.toString cond ++ "\n" ++
+                                          format level ++ "do\n" ++  printStmt (level+1) stmts
+
 instance Parse Statement where
   parse = stmt --error "Statement.parse not implemented"
-  toString = error "Statement.toString not implemented"
+  toString = printStmt 0 --error "Statement.toString not implemented"
