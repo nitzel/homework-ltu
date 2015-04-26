@@ -77,17 +77,16 @@
 - `S` Maximum Segment Size
 - Client retrieves object `F = 15S`
 - determine time `t` to retrieve the object (including TCP establishment) when
-  - 4S/R > S/R + 0RTT > 2S/R **f...u**
-  - 8S/R > S/R + 1RTT > 4S/R
-    - 
+  - 4S/R > S/R + RTT > 2S/R 
+  - 8S/R > S/R + RTT > 4S/R
   - S/R > RTT
     - 
 - `S/R` transmission time for `S`
-# WHAAAAAA NO IDEA
+- `RTT` starts as soon as the packet is completely sent until receival of ACK 
+- ANSWER `1: T=4RTT+14S/R; 2: T= 5RTT +11 S/R; 3: T= 3 RTT + 15 S/R`
 
 ##Q8 true false
-1. reception of 3 DUP ACK used by TCP to switch between GBN and SR and to switch between different congestion strategies
-  - dunno 
+1. **true** reception of 3 DUP ACK used by TCP to switch between GBN and SR and to switch between different congestion strategies
 2. 2 TCP connections over same bottleneck of Rate `R`, transmissions start at same time, TCP will give them `R/2` after long time
   - **wrong** because of different RTT times, making TCP able to grab more if RTT is low
 3. Acks are only sent piggybacked
