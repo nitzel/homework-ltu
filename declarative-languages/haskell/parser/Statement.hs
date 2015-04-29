@@ -19,6 +19,7 @@ stmt =
     assignStmt
   ! ifStmt
   ! skipStmt
+  ! skipStmt2
   ! readStmt
   ! writeStmt
   ! beginendStmt
@@ -31,6 +32,7 @@ ifStmt = accept "if" -# Expr.parse #- require "then" # stmt #- require "else" # 
 buildIf ((condition, statement1), statement2) = If condition statement1 statement2
 
 skipStmt = accept "skip" #- require ";" >-> buildSkip
+skipStmt2 = accept "/*" #- (iter word) #- require "*/" >-> buildSkip
 buildSkip _ = Skip
 
 readStmt = accept "read" -# word #- require ";" >-> buildRead

@@ -62,7 +62,7 @@ accept w = (token (chars (length w))) ? (==w)
 
 require :: String -> Parser String
 require s t = if isNothing (accept s t) then error ("expecting "++s++" near "++t) else accept s t  
-require w t = error "require not implemented"
+--require s t = error "require not implemented"
 
 lit :: Char -> Parser Char
 lit c = token char ? (==c)
