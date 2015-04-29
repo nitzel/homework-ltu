@@ -25,18 +25,20 @@ iter m = m # iter m >-> cons ! return []
 
 cons(a, b) = a:b
 
+-- todo
 (-#) :: Parser a -> Parser b -> Parser b
-(m -# n) cs = 
-    case (m#spaces) cs of
-    Nothing -> Nothing
-    Just((a,b), cs') -> n cs'
+(m -# n) cs = ((m # n) >-> \(_,x)-> x) cs
+--(m -# n) cs = 
+--    case (m#spaces) cs of
+--    Nothing -> Nothing
+--    Just((a,b), cs') -> n cs'
 --m -# n = error "-# not implemented"
 
 (#-) :: Parser a -> Parser b -> Parser a
-(m #- n) cs = 
-  case (m#spaces#n) cs of
-  Nothing -> Nothing
-  Just(((a,b),c), cs') -> Just(a, cs')
+(m #- n) cs = ((m # n) >-> \(x,_)-> x) cs
+--  case (m#spaces#n) cs of
+--  Nothing -> Nothing
+--  Just(((a,b),c), cs') -> Just(a, cs')
 --m #- n = error "#- not implemented"
 
 spaces :: Parser String
@@ -60,8 +62,10 @@ chars n = char #chars (n-1) >-> cons
 accept :: String -> Parser String
 accept w = (token (chars (length w))) ? (==w)
 
+-- todo use parsers instead
 require :: String -> Parser String
-require s t = if isNothing (accept s t) then error ("expecting "++s++" near "++t) else accept s t  
+require s = (accept s ! err ("expected " ++ s))
+--if isNothing (accept s t) then error ("expecting "++s++" near "++t) else accept s t  
 --require s t = error "require not implemented"
 
 lit :: Char -> Parser Char
