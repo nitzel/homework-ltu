@@ -63,20 +63,18 @@
 ## Q3
 - [ ] **wrong** non persistent, single segment, 2 http requests
 - [ ] **wrong** 3 files. one request, 3 answers
-- [] ?? distinct webpages over one connection possible
-  - alywas or sometimes possible???
+- [x] **true** distinct webpages(same server) over one connection possible
 - [ ] **wrong** date-field in http response indicates last modified
 - [ ] **wrong** client connects to server on execution of .exe
 - [x] **true** mail and webserver can have the same alias (use different ports)
 - [x] **true** FTP uses two parallel TCP connections, 1 control, 1 data
 - [ ] **wrong** cookie is used for encryption
-  - well, its possible, but unsafe
 - [x] **true** SMTP uses handshaking at Application layer, HTTP does not
-- [ ] **wrong** Web caching can reduce the delay for uncached objects 
+- [x] **wrong** Web caching can reduce the delay for uncached objects 
 - [x] **true** TCP provides reliable byte-stream between C,S, UDP does not 
 - [ ] **wrong** TCP and UDP guarantee certain throughput
 - [x] **true** neither TCP nor UDP guarantee delivery within `time t`
-- [x] **true** TCP provides security while UDP does not
+- [ ] **false** TCP provides security while UDP does not
   - TCP with SSL does, but TCP on its own: no
 - [x] **true** SSL operates at the application layer
 - [ ] **wrong** to do transaction as fast as possible: use TCP, not UDP
