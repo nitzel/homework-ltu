@@ -87,8 +87,8 @@
 
 ##Q8 true false
 1. **true** reception of 3 DUP ACK used by TCP to switch between GBN and SR and to switch between different congestion strategies
-2. 2 TCP connections over same bottleneck of Rate `R`, transmissions start at same time, TCP will give them `R/2` after long time
-  - **wrong** because of different RTT times, making TCP able to grab more if RTT is low
+2. **true** 2 TCP connections over same bottleneck of Rate `R`, transmissions start at same time, TCP will give them `R/2` after long time
+  - if the `RTT1=RTT2`, otherweise the one with lower RTT will grab more
 3. Acks are only sent piggybacked
   - **wrong** acks on itself can also be sent (alone) 
 4. `SN1 = 90, SN2 = 110` means `20 bytes` of data in Segment 1
