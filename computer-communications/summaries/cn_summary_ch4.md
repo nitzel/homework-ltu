@@ -1,7 +1,6 @@
 #Chapter 4 - The Network Layer
 Summary of Chapter 4 of Computer Networking - A Top Down Approach, 6th Edition
 
-This is not complete, the second part will follow next week.
 ## Introduction
 - Forwarding: From Input-Link to Output-Link in a single Router
 - Routing: network wide process to find end2end route
@@ -113,5 +112,97 @@ This is not complete, the second part will follow next week.
     - Connection oriented
     - SendSocket passes segments to IPsec, they get encrypted, sent, received, decrypted, passed to RecvSocket
 
-## 4.5 Routing Algorithms 
-This chapter will be done next week :)
+## Routing Algorithms 
+- **default router** for host is it's **first-hop**
+- goal: route between hosts **first-hop** and target's = **destination router**
+- Network from Company Z may block Packets from Company Ys network
+- **global routing algorithm** has complete info about connectivity and link costs
+  - often referred to as **link state algorithsm**, because they need to know about the links state
+- **decentralized routing algorithm**, in the beginning: knows costs to neighbors only
+  - **distance vector algorithm**, keeping some estimated costs
+- **static routing algorithms**: paths change slowly, e.g. after manual change of routing table
+- **dynamic routing algorithms**: paths change depending on link-states/costs. can have problems with routing loops
+- **load sensitive algorithms**: link costs reflect congestion
+  - encounter several problems, so todays algorithms are **load INsensitive**
+
+### Algorithms
+- **LS** Link-State Routing Algorithm, uses global information
+  - **Dijkstra's Algorithm** in `n*(n+1)/2 e O(n^2)`
+  - Oscillations: using Path A, detecting better Path B. Now Path A is better, will be used in the next step. Now Path B is better, ...
+    - can be avoided by having different (randomized) update times for each router
+- **DV** Distance Vector Routing Algorithm, iterative, async, distributed
+  - calculates and distributes the information
+  - stops on its own
+  - Bellman-Ford equation `d_x(y) = min_v{c(x,v) + d_v(y)}`
+  - needs to know the next hop router on the shortest path for targets
+  - examples: RIP, BGP, ISO IDRP, Novell IPX, ARPAnet
+  - Link-Cost Changes & Link Failure
+    - lower costs: informs neighbors if that changes the lowest cost path
+    - higher costs: can induce routing loops, needs a long time to be fixed **BAD**
+      - called **count to infinity problem**
+      - adding poisoned reverse
+        - A sends packet back to B, adding the information that A cant forward to target
+        - B sends around, and claims, A has no connection to the target
+        - later A sets it to a lower value
+        -  does **not** solve the **count to infinity** problem completely, only for 2 adjacent nodes
+- compare LS and DV
+  - both are used, both have (dis)advantages
+- other algorithms
+  - circuit switching, ...
+
+### Hierarchical Routing
+- The internet is more complicated: in Scale, administrative autonomy(companies prefer their packets)
+  - **AS** autonomous systems: several connected routers run all the same routing algorithm, controlled by one admin/ISP
+  - intra autonomous system routing protocol
+  - ASs are connected, some have to deal with destinations "outside": **gateway routers**
+    - routers inside an AS need to learn which Gateway to forward to, depending on address
+  - **hot potato routing** like the party game xD
+
+## Routing int the Internet
+- Intra-AS Routing (**interiour gateway protocols**)
+  - **RIP** Routing Information Protocol (a Distance Vector Protocol)
+    - uses `UDP Port 520`
+    - updates every ~30sec via **RIP response messages/advertisements**
+    - maintains a RIP/Routing table
+      - `Destination Subnet, Next Router, Hops to Destination` 
+    - neighbor considered dead after approx 180sec
+  - **OSPF** Open Shortest Path First, successor to **RIP**
+    - security: authentication, only trusted routers can take part in routing
+    - multiple same cost paths
+    - integrated support for: unicast, multicast
+    - hierarchy in AS
+    - **backbone**
+- Inter AS Routing: **BGP** Border Gateway Protocol ("is extremely complex")
+  - Tasks
+    - obtain subnet reachability information from neighboring ASs
+    - propagate the reachability to other routers inside the as
+    - find **good** routs to subnets 
+  - BGP Peers
+  - **eBGP**/**iBGP** external/internal BGP session
+  - **ASN** autonomous system number
+  - uses routing policies!
+  
+### Broadcast and Multicast Routing
+- **unicast**: src to one node
+- **broadcast**: src to all nodes in network
+  - as **N-way-unicast** (one packet to each) implementation simple but very inefficient
+    - and not all receivers may be known to the sender
+    - broadcast can be used to find unicast routes. when we use unicast for that ... well
+  - as **uncontrolled flooding**
+    - send to all neighbors, they send it to all neighbors, ... -> **broadcast storm** rendering the network useless
+  - as **controlled flodding**
+    - sequence number controlled flooding:
+      - on receival: check if broadcast-sequencenumber is in list, if not: forward it to neighbors (except sender)
+    - **RPF reverse path forwarding**
+      - packets that dont come on the shortest way from the Source are dropped
+  - Spanning Tree Broadcast
+- Broadcast Algorithms in Practice
+  - e.g. to broadcast Link-State Advertisments, service discovery, ...
+- **multicast**: src to subset of network nodes
+  - **IGMP** Internet Group Management Protocol, manages multicast groups
+    - between Host and Router
+  - via group shared tree
+  - via source based tree
+  - **DVMRP** Distance-Vector Multicast Routing Protocol
+  - **PIM** Protocol Independent Multicast routing protocol, most widely used
+  - **SSM** source specific multicast
