@@ -1,36 +1,43 @@
+% delete element from list
 del(X, [X | Tail], Tail).
 del(X, [Y | Tail], [Y | Tail1]) :- del(X, Tail, Tail1).
 
-% who eats whom? goes in both directions
-eats(f,g).
-eats(g,s).
-eat(X,Y) :- eats(X,Y) 
-          ; eats(Y,X).
-            
-% list of animals with "food collisions"
-deadly([A|List]) :- del(X, List, _), eat(A,X).
-deadly([_|List]) :- deadly(List).
+% these combinations are "friends" aka go well with each other
+fri(f,s). 
+fri(s,f). 
+fri(X,X). 
+% list of friends = list of things without "food collisions"
+alive([]).
+alive([_]).
+alive([A,B]) :- fri(A,B).
+alive([A|List]) :- [B|L2] = List, fri(A,B), alive([A|L2]), alive(L2).
 
-% check if state is "bad", that is, "food collisions" left alone on one side
-stateBad([_,E,west]) :- deadly(E).
-stateBad([W,_,east]) :- deadly(W).
+% check if state is good, no "food collisions"
+stateGood([_,E,west]) :- alive(E).
+stateGood([W,_,east]) :- alive(W).
 
-% sail from P1 to P2
+% sail from one riverside to the other (just swapping west & east)
 sail(west,east).
 sail(east,west).
 
-% move an object from one side to another
-moveObj([W,E,east],[W2,E2,west],Obj) :- del(Obj, E, E2), append(W, [Obj], W2).
-moveObj([W,E,west],[W2,E2,east],Obj) :- del(Obj, W, W2), append(E, [Obj], E2).
+% Move the boat (changes position in state) and eventually carries an Object obj from one side to the other (changes lists W2,E2)
+moveBoat([W,E,P1],[W,E,P2],empty) :- sail(P1,P2).                                % carry nothing
+moveBoat([W,E,east],[W2,E2,west],Obj) :- del(Obj, E, E2), append(W, [Obj], W2).  % carry sth from east to west
+moveBoat([W,E,west],[W2,E2,east],Obj) :- del(Obj, W, W2), append(E, [Obj], E2).  % carry sth from west to east
 
-% init state, fgs on the West, nothing on the East, boat in the west
-initstate(S) :- S = [[f,g,s],[],west].
 
 % state consists of [W,E,P], animals in the West, animals in the East, boatposition
-solvefgb([_,[],west], west, Na, _) :- Na > 0. %other side empty
-solvefgb([[],_,east], east, Na, _) :- Na > 0. %other side empty
-solvefgb([W,E,P], Dest, Na, Trace) :- Na > 0, \+ stateBad([W,E,P]), Na2 is Na-1, moveObj([W,E,P],[W2,E2,P2],Obj), solvefgb([W2,E2,P2], Dest, Na2, append(Trace,[P2,Obj])).
+solvefgb([_,[],west], west, Na, []) :- Na >= 0. % boat at Dest, other Side empty = succeed (since we only move, but never really delete objects)
+solvefgb([[],_,east], east, Na, []) :- Na >= 0. % boat at Dest, other Side empty = succeed (since we only move, but never really delete objects)
+solvefgb([W,E,P], Dest, Na, Trace) :- Na >= 0                                 % check if we have steps left
+                                      ,stateGood([W,E,P])                     % Check if no one gets eaten
+                                      ,Na2 is Na-1                            % decrement "steps left"
+                                      ,moveBoat([W,E,P],[W2,E2,P2],Obj)       % move the boat(maybe with object)
+                                      ,solvefgb([W2,E2,P2],Dest, Na2, Trace1) % solve the remaining 
+                                      ,Trace=[[P2,Obj]|Trace1].               % add action to trace
 
-
-
-?- initstate(S), solvefgb(S, west, 5, Trace).
+% init state: fgs and boat on the westside, nothing on the eastside
+initstate(S) :- S = [[f,g,s],[],west].
+% tests
+?- initstate(S), solvefgb(S, east, 5, Trace). %nope
+?- initstate(S), solvefgb(S, east, 7, Trace). %yep!
