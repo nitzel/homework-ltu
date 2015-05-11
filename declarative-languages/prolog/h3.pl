@@ -4,13 +4,17 @@ del(X, [Y | Tail], [Y | Tail1]) :- del(X, Tail, Tail1).
 
 % these combinations are "friends" aka go well with each other
 fri(f,s). 
-fri(s,f). 
+fri(f,e). 
+fri(g,e).  
+fri(s,f).  
+fri(e,f). 
+fri(e,g). 
 fri(X,X). 
 % list of friends = list of things without "food collisions"
-alive([]).
-alive([_]).
-alive([A,B]) :- fri(A,B).
-alive([A|List]) :- [B|L2] = List, fri(A,B), alive([A|L2]), alive(L2).
+alive([]) :- !.
+alive([_]) :- !.
+alive([A,B]) :- fri(A,B),!.
+alive([A|List]) :- [B|L2] = List, fri(A,B), alive([A|L2]), alive(L2), !.
 
 % check if state is good, no "food collisions"
 stateGood([_,E,west]) :- alive(E).
@@ -39,5 +43,5 @@ solvefgb([W,E,P], Dest, Na, Trace) :- Na >= 0                                 % 
 % init state: fgs and boat on the westside, nothing on the eastside
 initstate(S) :- S = [[f,g,s],[],west].
 % tests
-?- initstate(S), solvefgb(S, east, 5, Trace). %nope
-?- initstate(S), solvefgb(S, east, 7, Trace). %yep!
+?- initstate(S), solvefgb(S, east, 5, _). %nope
+?- initstate(S), solvefgb(S, east, 7, _). %yep!
