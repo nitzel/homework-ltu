@@ -20,10 +20,11 @@
 - Dy(x) = 5, Dy(w) = 2, Dy(u) = 6
 - ? Dx? 
   - Dx(w) = 2, Dx(y) = 4, Dx(u) = 7
-- ? link cost change for c(w,x) or c(x,y)
+- ? link cost change for c(w,x) or c(x,y) so that x will update
   - `c(x,w) > 6` because then x,y,u is shorter than `x,w,u`
-  - `not possible` because x,y,u will still be as expensive as `x,w,u`
-- ANSWER:  `Dx(w) = 2, Dx(y) = 4, Dx(u) = 7; 2: Change of c(x,w)>6 will cause updating the neighbors; 3: Any changes of c(x,y) as well as changes of 6>c(x,w)>1 will not cause updating the neighbors.`
+- ? link cost change for c(w,x) or c(x,y) so that x will **not** update
+  - `not possible` because x,y,u will still be as expensive as `x,w,u`, unless you choose c(x,w)>6 (as in previous question)
+- ANSWER:  `Dx(w) = 2, Dx(y) = 4, Dx(u) = 7; 2: Change of c(x,w)>6 will cause updating the neighbors; 3: Any changes of c(x,y) as well as changes of 6>c(x,w)>1 will not cause updating the neighbors.` 
 
 # Q3 Fragmentation
 - Datagram, data: `L=3000 bytes`, Identification number `n = 422`
@@ -67,11 +68,11 @@
 1. [x] the routers both in datagram networks and virtual circuit networks use forwarding tables
 2. [ ] **false** ICMP is a protocol at the transport layer 
   - it works at network layer, with IP
-3. [x] **false** Host joins multicast group, it must change its IP addr to the one of the multicast
+3. [ ] **false** Host joins multicast group, it must change its IP addr to the one of the multicast
 4. [ ] **false** IPv6 uses 64 bit addresses
   - its 128 bits
-5. [x] With the help of ICMP one can determine a minimum size MTU
-  - **true**, its called Path MTU Algorithm or something like that.
+5. [x] **true** With the help of ICMP one can determine a minimum size MTU
+  - its called Path MTU Algorithm or something like that.
 6. [x] **true** link-state routing protocol OSPF implements Dijkstra routing algorithm
 7. [x] **true** RIP based on Bellman Ford algorithm may create loops in the topology
   - maybe, we dont know. Packets age with each hop
