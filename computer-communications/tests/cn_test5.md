@@ -10,11 +10,12 @@
   - success `S = p(1-p)^(N-1)`
   - fail (collision/empty) `F = 1-p(1-p)^(N-1)`
   - `N = 3`
-  - one node succeeds only 1 out of 4 times: `P1 = S*F^3 = (1 – p(1 – p)^2)^3 p(1 – p)^2`
+  - one node succeeds only 1 out of 4 times: `P1 = S*F^3 = (1 â€“ p(1 â€“ p)^2)^3 p(1 â€“ p)^2`
   - any of the 3 nodes succeeds: `P2 = 3*S = 3p*(1 - p)^2`
   - efficiency: `E = P2 = 3p * (1 - p)^2`
-  - ANSWER: `P1=(1 – p(1 – p)^2)^3 p(1 – p)^2; P2=3 p(1-p)^2; E=3 p(1-p)^2`
+  - ANSWER: `P1=(1 â€“ p(1 â€“ p)^2)^3 p(1 â€“ p)^2; P2=3 p(1-p)^2; E=3 p(1-p)^2`
 - page 450
+
 ## Q2 Broadcast channel
 - broadcast channel wit N nodes
 - uses polling (with additional polling node) for multiple access
