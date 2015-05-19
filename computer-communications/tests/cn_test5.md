@@ -48,6 +48,7 @@
   - time till collision detection `d_prop`
   - additional prop delay `d_prop`
   - ANSWER `d_trans + 2d_prop = 100 microsec + 25 microsec = 125 microsec`
+- **WHY?** ANSWER `12.5 microsec, 137.5 microsec`
   
 ## Q4 Spanning Tree
 - Network like in Image
@@ -76,8 +77,8 @@
   - maybe not, because not possible to have total reliability
 - [ ] **false** framestructure of 10Base-T, 100Base-T and Gigabit Ethernet is the same
   - i think there was another field
-- [?]  transparent bridges may have IP addresses
-  - maybe yes, maybe no. dunno! :(
+- [ ] **false** transparent bridges may have IP addresses
+  - nope nope nope
 - [x] **true** Efficiency(slotted aloha) > 2*efficiency(unslotted aloha) (nearly)
   - pure: `18%`, slotted: `36.8` 
 - [ ] **false** 10mbps ethernet entwork can be arbitrary long
