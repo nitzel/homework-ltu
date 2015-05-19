@@ -15,6 +15,15 @@
   - `=2^16`
 
 # Q2 Distance vector routing
+- Routers u,w,x,y. 
+- Dw(x) = 2, Dw(y) = 2, Dw(u) = 5
+- Dy(x) = 5, Dy(w) = 2, Dy(u) = 6
+- ? Dx? 
+  - Dx(w) = 2, Dx(y) = 4, Dx(u) = 7
+- ? link cost change for c(w,x) or c(x,y)
+  - `c(x,w) > 6` because then x,y,u is shorter than `x,w,u`
+  - `not possible` because x,y,u will still be as expensive as `x,w,u`
+- ANSWER:  `Dx(w) = 2, Dx(y) = 4, Dx(u) = 7; 2: Change of c(x,w)>6 will cause updating the neighbors; 3: Any changes of c(x,y) as well as changes of 6>c(x,w)>1 will not cause updating the neighbors.`
 
 # Q3 Fragmentation
 - Datagram, data: `L=3000 bytes`, Identification number `n = 422`
@@ -55,28 +64,28 @@
   - ANSWER `101.101.101.64/28, 101.101.101.80/28, 101.101.101.96/28, 101.101.101.112/28`
 
 # Q6 True False
-1. [] the routers both in datagram networks and virtual circuit networks use forwarding tables
-2. [] ICMP is a protocol at the transport layer 
-  - I think its **true**
-3. [] Host joins multicast group, it must change its IP addr to the one of the multicast
-  - well ... no? thats **false**
-4. [ ] IPv6 uses 64 bit addresses
-  - **WROOOOONG** its 128 bits
+1. [x] the routers both in datagram networks and virtual circuit networks use forwarding tables
+2. [ ] **false** ICMP is a protocol at the transport layer 
+  - it works at network layer, with IP
+3. [x] **false** Host joins multicast group, it must change its IP addr to the one of the multicast
+4. [ ] **false** IPv6 uses 64 bit addresses
+  - its 128 bits
 5. [x] With the help of ICMP one can determine a minimum size MTU
   - **true**, its called Path MTU Algorithm or something like that.
-6. [] link-state routing protocol OSPF implements Dijsktra routing algorithm
-7. [] RIP based on Bellman Ford algorithm may create loops in the topology
-8. [] ospF consumes mor network resources than RIP for its operations
-9. [] a router must be configured with only one IP addr
-  - I think that is **false**! Can have one IP address for each link
-10. [] Routing protocols for Inter-AS and Intra-AS are different
-11. [ ] Head-of-line blocking occurs at the output port of a router
-  - **wrong**, it occurs at the input line. wouldnt make sense at output....
-12. [] 2x2 switch, to have no input port queuing, switching fabric should work at at least 2x line speed
+6. [x] **true** link-state routing protocol OSPF implements Dijkstra routing algorithm
+7. [x] **true** RIP based on Bellman Ford algorithm may create loops in the topology
+  - maybe, we dont know. Packets age with each hop
+8. [x] **true** ospF consumes more network resources than RIP for its operations
+9. [ ] **false** a router must be configured with only one IP addr
+  - Can have one IP address for each link
+10. [x] **true** Routing protocols for Inter-AS and Intra-AS are different
+11. [ ] **false** Head-of-line blocking occurs at the output port of a router
+  - it occurs at the input line. wouldnt make sense at output.... S.330
+12. [x] **true** 2x2 switch, to have no input port queuing, switching fabric should work at at least 2x line speed
   - what exactly is a 2x2 switch? If it has `n` input ports, switching fabric should run at `2n`
 13. [x] **true** `/24` is larger than `/29` network
-14. [ ] In a network with mask `/30` there are maximum 8 IP enabled devices
-  - **wrong**. With /30 there are 4 IPs, 2 for organizing, 2 for devices. 
+14. [ ] **false** In a network with mask `/30` there are maximum 8 IP enabled devices
+  - With /30 there are 4 IPs, 2 for organizing, 2 for devices. 
   - Or with a NAT in there, way more than 8...
-15. [ ] **WRONG** Ethernet addresses are hierarchically structured while IP addresses are not
+15. [ ] **false** Ethernet addresses are hierarchically structured while IP addresses are not
   - its the other way round. MACs dont have a hierarchy, but IPs do have it!
