@@ -7,13 +7,20 @@
 - ? probability `P1` that node A succeeds for the first time in slot 4?
 - ? probability `P2` that any node succeeds in slot 2?
 - ? efficiency E of this three-node system (all nodes succeed)?
-
+  - success `S = p(1-p)^(N-1)`
+  - fail (collision/empty) `F = 1-p(1-p)^(N-1)`
+  - `N = 3`
+  - one node succeeds only 1 out of 4 times: `P1 = S*F^3 = (1 – p(1 – p)^2)^3 p(1 – p)^2`
+  - any of the 3 nodes succeeds: `P2 = 3*S = 3p*(1 - p)^2`
+  - efficiency: `E = P2 = 3p * (1 - p)^2`
+  - ANSWER: `P1=(1 – p(1 – p)^2)^3 p(1 – p)^2; P2=3 p(1-p)^2; E=3 p(1-p)^2`
+- page 450
 ## Q2 Broadcast channel
 - broadcast channel wit N nodes
 - uses polling (with additional polling node) for multiple access
 - transmission rate `R`
 - `d_poll` polling delay (from one node finnishes to when next node gets permission to transmit)
-- per round, max `Q` bits to transit.
+- per round, max `Q` bits to transmit.
 - ? Maximum throughput of broadcast channel
   - `Q/R` time spent transmitting
   - `d_poll` time spent waiting
@@ -60,20 +67,28 @@
   - shortest path from node to root, link becomes `root-port`
   - shortest path from network to root, outgoing link from the switch to this network on the way becomes `designated port`
   - the rest becomes `blocked port`
-  - could be RBD or RDD
+  - could be RDD
+- ANSWER no part1/2 are wrong. so by guessing, we choose `YES, YES, A21, r,d,d`
   
 ## Q5 true false
 - [x] **true** TCP reliable service redundant if all links would be reliable
+  - maybe not, because not possible to have total reliability
 - [ ] **false** framestructure of 10Base-T, 100Base-T and Gigabit Ethernet is the same
   - i think there was another field
-- [x] **true** transparent bridges may have IP addresses
-- [?] Efficiency(slotted aloha) > 2*efficiency(unslotted aloha) (nearly)
-- [?] Gigabit Ethernet uses CSMA/CD
+- [?]  transparent bridges may have IP addresses
+  - maybe yes, maybe no. dunno! :(
+- [x] **true** Efficiency(slotted aloha) > 2*efficiency(unslotted aloha) (nearly)
+  - pure: `18%`, slotted: `36.8` 
+- [ ] **false** 10mbps ethernet entwork can be arbitrary long
+  - nope, up to 500m
+- [x] **true** Gigabit Ethernet uses CSMA/CD
+  - 10-100 mbps, but 1gbps does not use csma/cd anymore (-slide8)
 - [ ] **false** Ethernet Addresses (=MAC) are hierarchically structured
-- [?] ARP is used to find out IP address of first router
+- [ ] **false** ARP is used to find out IP address of first router
+  - its used to get MAC from IP, every host/router has an ARP table
 - [ ] **false** nodes connected to different ports of a learning switch belong to the same collision domain
-  - if they were on the same link/port it would be true
-- [x] Spanning Tree Protocol was invented to avoid loops in LANs
+  - if they were on the same link/port it would be true (slide8)
+- [x] **true** Spanning Tree Protocol was invented to avoid loops in LANs
 
 
 
