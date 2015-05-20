@@ -25,15 +25,16 @@ nb(X,Y, Nx, Ny, Dx, Dy) :- member(Dx,[-1,0,1]),               % try different of
                            (Nx \= X; Ny \= Y).              % avoid (Nx,Ny)=(X,Y) 
 
 %
-friendinsight(X, Y, Dx, Dy, FriendlyColor, Board) :- nb(X,Y, Nx, Ny, Dx, Dy), member((FriendlyColor, Nx, Ny), Board). % found friend in sight                            
-friendinsight(X, Y, Dx, Dy, FriendlyColor, Board) :- nb(X,Y, Nx, Ny, Dx, Dy), member((_, Nx, Ny), Board),   % found enemy in row  
-                                                     friendinsight(Nx,Ny,Dx,Dy,FriendlyColor, Board).       % Continue searching
+friendinsight(X, Y, Dx, Dy, FriendlyColor, Board) :-  nb(X,Y, Nx, Ny, Dx, Dy), member((FriendlyColor, Nx, Ny), Board). % found friend in sight                            
+friendinsight(X, Y, Dx, Dy, FriendlyColor, Board) :-  nb(X,Y, Nx, Ny, Dx, Dy), 
+                                                      swap(FriendlyColor, Enemy),member((Enemy, Nx, Ny), Board),   % found enemy in row  
+                                                      friendinsight(Nx,Ny,Dx,Dy,FriendlyColor, Board).       % Continue searching
 %friendinsight(_, _, _ , _ , _            , _) :- fail.                                                  % not used field, fail!                     
                            
 % 
 neighbor(Color, Board, X, Y) :- swap(Color, Enemy), 
                                 nb(X,Y, Nx, Ny, Dx, Dy),         % check neighbors
-                                member((Enemy, Nx, Ny), Board).  % one neighbor has to be the other color
+                                member((Enemy, Nx, Ny), Board),  % one neighbor has to be the other color
                                 friendinsight(Nx, Ny, Dx, Dy, Color, Board).  % and behind it we have to find after more enemies, a friendly stone
 
                                 
@@ -46,6 +47,8 @@ legalmove(Color, Board, X, Y) :- posempty(Color, Board, X, Y), neighbor(Color, B
 
 
 %?- legalmove(black, [(white,d,4),(black,e,4),(black,d,5),(white,e,5)], X,Y).
+% friendinsight(d, 4, 1, 0, black, [(white,d,4),(black,e,4),(black,d,5),(white,e,5)]).
+
 
 %Define a predicate makemove(+Color, +Board, +X, +Y, -NewBoard), that computes
 %the new board given a color, a board, and the x and y coordinates of the move. The
