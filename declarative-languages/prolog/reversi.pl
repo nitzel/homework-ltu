@@ -22,11 +22,21 @@ nb(X,Y, Nx, Ny, Dx, Dy) :- member(Dx,[-1,0,1]),               % try different of
                            nth0(Pxe, [a,b,c,d,e,f,g,h], Nx),  % neighbors X coordinate
                            member(Dy,[-1,0,1]),               % try different offsets (upper,middle,lower)
                            Ny is Y+Dy,                        % Neighbors Y coordinate
-                           (Nx =\= X; Ny =\= Y).                      % avoid (Nx,Ny)=(X,Y) 
+                           (Nx \= X; Ny \= Y).              % avoid (Nx,Ny)=(X,Y) 
 
+%
+friendinsight(X, Y, Dx, Dy, FriendlyColor, Board) :- nb(X,Y, Nx, Ny, Dx, Dy), member((FriendlyColor, Nx, Ny), Board). % found friend in sight                            
+friendinsight(X, Y, Dx, Dy, FriendlyColor, Board) :- nb(X,Y, Nx, Ny, Dx, Dy), member((_, Nx, Ny), Board),   % found enemy in row  
+                                                     friendinsight(Nx,Ny,Dx,Dy,FriendlyColor, Board).       % Continue searching
+%friendinsight(_, _, _ , _ , _            , _) :- fail.                                                  % not used field, fail!                     
+                           
 % 
-neighbor(Color, Board, X, Y) :- swap(Color, Enemy), nb(X,Y, Nx, Ny, Dx, Dy).
+neighbor(Color, Board, X, Y) :- swap(Color, Enemy), 
+                                nb(X,Y, Nx, Ny, Dx, Dy),         % check neighbors
+                                member((Enemy, Nx, Ny), Board).  % one neighbor has to be the other color
+                                friendinsight(Nx, Ny, Dx, Dy, Color, Board).  % and behind it we have to find after more enemies, a friendly stone
 
+                                
 % Define a predicate legalmove(Color, Board, X, Y), that given a color, a board, and
 % a postion, succeeds if they constitute a legal move according to the rules of Reversi. Observe
 % that this predicate is useful both for finding coordinates and for determining if a particular
