@@ -49,6 +49,10 @@ legalmove(Color, Board, X, Y) :-  posempty(Color, Board, X, Y),
 %the new board given a color, a board, and the x and y coordinates of the move. The
 %goal should fail if the move is illegal.
 makemove(+Color, +Board, +X, +Y, -NewBoard).
+% its all about turning the pieces around, so do the same as in friendsinsight (jump from one to the next), store the swapped in a list and return the list in the end
+% if you do not find a friendlycolor in the end, just fail or return an empty list
+% then GATHER these lists from all friendsinsights and replace the corresponding pieces in the Board-State-List ... bagofall or so
+
 
 % todo
 %Also, define a predicate makemoves(+Color, +Board, +N, -Moves, -NewBoard)
