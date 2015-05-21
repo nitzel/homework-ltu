@@ -1,5 +1,5 @@
 #Chapter 6 - Wireless and mobile networks
-Summary of Chapter 5 of Computer Networking - A Top Down Approach, 6th Edition
+Summary of Chapter 6 of Computer Networking - A Top Down Approach, 6th Edition
 
 ## Introduction
 - wireless, mobile, and mobile&wireless
