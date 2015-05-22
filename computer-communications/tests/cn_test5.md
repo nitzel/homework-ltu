@@ -70,20 +70,20 @@
   - shortest path from network to root, outgoing link from the switch to this network on the way becomes `designated port`
   - the rest becomes `blocked port`
   - could be RDD
-- ANSWER no part1/2 are wrong. so by guessing, we choose `YES, YES, A21, r,d,d`
+- ANSWER `NO, NO, A21, r,b,d`
   
 ## Q5 true false
-- [x] **true** TCP reliable service redundant if all links would be reliable
+- [ ] **false** TCP reliable service redundant if all links would be reliable
   - maybe not, because not possible to have total reliability
-- [ ] **false** framestructure of 10Base-T, 100Base-T and Gigabit Ethernet is the same
+- [x] **true** framestructure of 10Base-T, 100Base-T and Gigabit Ethernet is the same
   - i think there was another field
-- [ ] **false** transparent bridges may have IP addresses
+- [x] **true** transparent bridges may have IP addresses
   - nope nope nope
 - [x] **true** Efficiency(slotted aloha) > 2*efficiency(unslotted aloha) (nearly)
   - pure: `18%`, slotted: `36.8` 
 - [ ] **false** 10mbps ethernet entwork can be arbitrary long
   - nope, up to 500m
-- [x] **true** Gigabit Ethernet uses CSMA/CD
+- [ ] **false** Gigabit Ethernet uses CSMA/CD
   - 10-100 mbps, but 1gbps does not use csma/cd anymore (-slide8)
 - [ ] **false** Ethernet Addresses (=MAC) are hierarchically structured
 - [ ] **false** ARP is used to find out IP address of first router
