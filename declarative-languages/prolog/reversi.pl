@@ -19,36 +19,48 @@ posempty(Color, Board, X, Y) :- position(Color, X, Y) , non_member((_, X, Y), Bo
 % neighbors: get the coordinates of a neighbor and also the direction Dx/Dy
 nb(X,Y, Nx, Ny, Dx, Dy) :- member(Dx,[-1,0,1]),               % try different X-offsets (left,middle,right) 
                            nth0(Px,  [a,b,c,d,e,f,g,h], X),   % position of X coord in the list
-                           Pxe is Px+Dx,                      % increase/decrease/keep as it is
                            nth0(Pxe, [a,b,c,d,e,f,g,h], Nx),  % neighbors X coordinate
                            member(Dy,[-1,0,1]),               % try different Y-offsets (upper,middle,lower)
-                           Ny is Y+Dy,                        % Neighbors Y coordinate
+                           Pxe is Px+Dx,                      % increase/decrease/keep the X-Coordinate
+                           Ny is Y+Dy,                        % increase/decrease/keep the Y-Coordinate to find the neighbors
                            (Nx \= X; Ny \= Y).                % avoid (Nx,Ny)=(X,Y) aka Dx=Dy=0
 
 % go in a direction hopping over enemies, until you encounter a friend
-friendinsight(X, Y, Dx, Dy, FriendlyColor, Board) :-  nb(X,Y, Nx, Ny, Dx, Dy),                % get neighbor coordinates in same dir
-                                                      member((FriendlyColor, Nx, Ny), Board). % found friend in sight                            
-friendinsight(X, Y, Dx, Dy, FriendlyColor, Board) :-  swap(FriendlyColor, EnemyColor),
+friendinsight(X, Y, Dx, Dy, FriendlyColor, Board, Changes) :-  nb(X,Y, Nx, Ny, Dx, Dy),                % get neighbor coordinates in same dir
+                                                      member((FriendlyColor, Nx, Ny), Board), % found friend in sight     
+                                                      Changes = [].
+friendinsight(X, Y, Dx, Dy, FriendlyColor, Board, Changes) :-  swap(FriendlyColor, EnemyColor),
                                                       nb(X,Y, Nx, Ny, Dx, Dy),                          % get neighbor coordinates in same dir
                                                       member((EnemyColor, Nx, Ny), Board),              % found enemy in row  
-                                                      friendinsight(Nx,Ny,Dx,Dy,FriendlyColor, Board).  % hop on it, ontinue searching
-
-                                
+                                                      friendinsight(Nx,Ny,Dx,Dy,FriendlyColor, Board, NChanges),  % hop on it, ontinue searching
+                                                      Changes = [(EnemyColor,Nx,Ny) | NChanges].  % add enemy stone to Changes list. (the one to flip)
+        
 % Define a predicate legalmove(Color, Board, X, Y), that given a color, a board, and
 % a postion, succeeds if they constitute a legal move according to the rules of Reversi. Observe
 % that this predicate is useful both for finding coordinates and for determining if a particular
 % coordinate constitutes a legal move. I.e. X and Y free (output) or bound (input)
-legalmove(Color, Board, X, Y) :-  posempty(Color, Board, X, Y), 
-                                  swap(Color, EnemyColor), 
-                                  nb(X,Y, Nx, Ny, Dx, Dy),         % check neighbors
-                                  member((EnemyColor, Nx, Ny), Board),  % one neighbor has to be the other color
-                                  friendinsight(Nx, Ny, Dx, Dy, Color, Board).  % and behind it we have to find after more enemies, a friendly stone
+legalmove(Color, Board, X, Y) :-  posempty(Color, Board, X, Y), friendinsight(X,Y, _, _, Color, Board, Changes), Changes \= []. % if no changes, there was no stone to flip. not what we want.
+
+%?- legalmove(black, [(white,d,4),(black,e,4),(black,d,5),(white,e,5)], X,Y).
+%?- legalmove(black, [(white,d,4),(black,e,4),(black,d,5),(white,e,5)], X,Y).
+%?- friendinsight(b, 4, 1, 0, black, [(white,c,4),(white,d,4),(black,e,4),(black,d,5),(white,e,5)], Changes).
 
 % todo
 %Define a predicate makemove(+Color, +Board, +X, +Y, -NewBoard), that computes
 %the new board given a color, a board, and the x and y coordinates of the move. The
 %goal should fail if the move is illegal.
-makemove(+Color, +Board, +X, +Y, -NewBoard).
+updateboard(Board, [], Board).
+updateboard(Board, [Change|Changes], Newboard) :- delete(Board, Change, CBoard), % remove flipped stone "Change" from Board.
+                                                  updateboard(CBoard, Changes, CNewboard),  % continue with removing "Changes"-Stones from Board
+                                                  (C,X,Y)=Change, swap(C,E), append(CNewboard, [(E,X,Y)], Newboard). % insert removed stone with changed color to Newboard
+
+makemove(Color, Board, X, Y, NewBoard) :- legalmove(Color, Board, X, Y), % check if move is legal
+                                          findall(Changes, friendinsight(X,Y, _, _, Color, Board, Changes), AllChanges),  % find all stones that are to be changed
+                                          flatten(AllChanges,FlatChanges), % flatten the list of lists
+                                          updateboard(Board, FlatChanges, NewBoard). % apply changes to board
+% makemove(black, [(white,e,4),(white,d,5),(white,e,5),(black,f,4),(black,d,6),(black,e,6)], d,4, Nuboard).
+% friendinsight(d,4, DX, DY, black, [(white,e,4),(white,d,5),(white,e,5),(black,f,4),(black,d,6)], Changes).
+% updateboard([(white, d, 5)], [(white, d, 5)],N).
 % its all about turning the pieces around, so do the same as in friendsinsight (jump from one to the next), store the swapped in a list and return the list in the end
 % if you do not find a friendlycolor in the end, just fail or return an empty list
 % then GATHER these lists from all friendsinsights and replace the corresponding pieces in the Board-State-List ... bagofall or so
