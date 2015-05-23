@@ -45,7 +45,6 @@ legalmove(Color, Board, X, Y) :-  posempty(Color, Board, X, Y), friendinsight(X,
 %?- legalmove(black, [(white,d,4),(black,e,4),(black,d,5),(white,e,5)], X,Y).
 %?- friendinsight(b, 4, 1, 0, black, [(white,c,4),(white,d,4),(black,e,4),(black,d,5),(white,e,5)], Changes).
 
-% todo
 %Define a predicate makemove(+Color, +Board, +X, +Y, -NewBoard), that computes
 %the new board given a color, a board, and the x and y coordinates of the move. The
 %goal should fail if the move is illegal.
@@ -63,7 +62,7 @@ makemove(Color, Board, X, Y, NewBoard) :- legalmove(Color, Board, X, Y), % check
 % updateboard([(white, d, 5)], [(white, d, 5)],N).
 % its all about turning the pieces around, so do the same as in friendsinsight (jump from one to the next), store the swapped in a list and return the list in the end
 % if you do not find a friendlycolor in the end, just fail or return an empty list
-% then GATHER these lists from all friendsinsights and replace the corresponding pieces in the Board-State-List ... bagofall or so
+% then GATHER these lists from all friendsinsights and replace the corresponding pieces in the Board-State-List ... findall or so
 
 
 % todo
@@ -78,7 +77,6 @@ makemove(Color, Board, X, Y, NewBoard) :- legalmove(Color, Board, X, Y), % check
 %the makemoves predicate will never fail.
 makemoves(+Color, +Board, +N, -Moves, -NewBoard).
 
-% todo
 %Determining the best possible move in Reversi is quite hard. However, we can make a
 %good approximation based on a predicate valueof(+Color,+Board,-Value), that
 %computes a value of a given board for a certain color. This predicate can be very sophisticated
@@ -87,7 +85,18 @@ makemoves(+Color, +Board, +N, -Moves, -NewBoard).
 %elements of Reversi strategy). Define the valueof predicate that performs a weighted
 %count of the number of pieces of a certain color, where corners weigh three times, and
 %edges two times, more than regular positions. Feel free to try out different weights.
- valueof(+Color,+Board,-Value).
+
+% value assigns each position a value 1,2,3 or 0 if owned by enemy
+value(Color, (Color, X, Y), 3) :-  (X==a;X==h),(Y==1;Y==8) ,!.  % corners
+value(Color, (Color, X, Y), 2) :- ((X==a;X==h);(Y==1;Y==8)),!.  % edges
+value(Color, (Color, _, _), 1).                             % other
+value(Color, (Enemy, _, _), 0) :- swap(Color, Enemy).       % enemy stones get you nothing
+
+%valueof(Color,[B|Board],Value) :- swap(Color,Enemy), (Enemy, X,Y) = B, valueof(Color, Board, Value). 
+valueof(Color, [B|Board], Value) :- valueof(Color, Board, V), value(Color, B, ThisVal), Value is V+ThisVal.
+valueof(_, [], 0). %base case, empty field is 0 for every player
+
+% valueof(black, [(white,e,4),(white,d,5),(white,e,5),(black,f,4),(black,d,6),(black,e,6)], V).
 
 % todo
 %Define a predicate findbestmove(+Color, +Board, +N, -X, -Y) that computes
