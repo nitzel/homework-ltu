@@ -9,6 +9,7 @@ non_member(_,[]).
 swap(white,black).
 swap(black,white).
 
+
 % is the move on playground (values in range: black/white, a-h, 1-8)
 position(P,X,Y) :- member(P, [white,black]) , member(X, [a,b,c,d,e,f,g,h]), member(Y, [1,2,3,4,5,6,7,8]).
 position([P,X,Y]) :- position(P,X,Y).
@@ -23,7 +24,8 @@ nb(X,Y, Nx, Ny, Dx, Dy) :- member(Dx,[-1,0,1]),               % try different X-
                            member(Dy,[-1,0,1]),               % try different Y-offsets (upper,middle,lower)
                            Pxe is Px+Dx,                      % increase/decrease/keep the X-Coordinate
                            Ny is Y+Dy,                        % increase/decrease/keep the Y-Coordinate to find the neighbors
-                           (Nx \= X; Ny \= Y).                % avoid (Nx,Ny)=(X,Y) aka Dx=Dy=0
+                           8>=Ny, Ny>=1,                      % Ny e [1,8]
+                           (Nx,Ny)\= (X,Y).                % avoid (Nx,Ny)=(X,Y) aka Dx=Dy=0
 
 % go in a direction hopping over enemies, until you encounter a friend
 friendinsight(X, Y, Dx, Dy, FriendlyColor, Board, []) :-        nb(X,Y, Nx, Ny, Dx, Dy),                % get neighbor coordinates in same dir
@@ -31,7 +33,7 @@ friendinsight(X, Y, Dx, Dy, FriendlyColor, Board, []) :-        nb(X,Y, Nx, Ny, 
 friendinsight(X, Y, Dx, Dy, FriendlyColor, Board, Changes) :-   swap(FriendlyColor, EnemyColor),
                                                                 nb(X,Y, Nx, Ny, Dx, Dy),                          % get neighbor coordinates in same dir
                                                                 member((EnemyColor, Nx, Ny), Board),              % found enemy in row  
-                                                                friendinsight(Nx,Ny,Dx,Dy,FriendlyColor, Board, NChanges),  % hop on it, ontinue searching
+                                                                friendinsight(Nx,Ny,Dx,Dy,FriendlyColor, Board, NChanges),  % hop on it, continue searching
                                                                 Changes = [(EnemyColor,Nx,Ny) | NChanges].  % add enemy stone to Changes list. (the one to flip)
         
 % Define a predicate legalmove(Color, Board, X, Y), that given a color, a board, and
@@ -40,7 +42,11 @@ friendinsight(X, Y, Dx, Dy, FriendlyColor, Board, Changes) :-   swap(FriendlyCol
 % coordinate constitutes a legal move. I.e. X and Y free (output) or bound (input)
 legalmove(Color, Board, X, Y) :-  posempty(Color, Board, X, Y), friendinsight(X,Y, _, _, Color, Board, Changes), Changes \= []. % if no changes, there was no stone to flip. not what we want.
 
-%?- legalmove(black, [(white,d,4),(black,e,4),(black,d,5),(white,e,5)], X,Y).
+
+% legalmove(black, [(white,e,4),(white,d,5),(white,e,5),(black,f,4),(black,d,6),(black,e,6)], X, Y). 
+% posempty(black, [(white,e,4),(white,d,5),(white,e,5),(black,f,4),(black,d,6),(black,e,6)], X, Y). 
+% friendinsight(d, 4, DX, DY, black, [(white,e,4),(white,d,5),(white,e,5),(black,f,4),(black,d,6),(black,e,6)], C). 
+
 %?- legalmove(black, [(white,d,4),(black,e,4),(black,d,5),(white,e,5)], X,Y).
 %?- friendinsight(b, 4, 1, 0, black, [(white,c,4),(white,d,4),(black,e,4),(black,d,5),(white,e,5)], Changes).
 
@@ -56,8 +62,10 @@ makemove(Color, Board, X, Y, NewBoard) :- legalmove(Color, Board, X, Y), % check
                                           findall(Changes, friendinsight(X,Y, _, _, Color, Board, Changes), AllChanges),  % find all stones that are to be changed
                                           flatten(AllChanges,FlatChanges), % flatten the list of lists
                                           updateboard(Board, FlatChanges, NewBoardPre), % apply changes to board
-                                          list_to_set([(Color, X, Y) | NewBoardPre], NewBoard). % add the last move, remove duplicates
+                                          NewBoard = [(Color, X, Y) | NewBoardPre]. % add the last move, remove duplicates
+                                          %list_to_set([(Color, X, Y) | NewBoardPre], NewBoard). % add the last move, remove duplicates
 % makemove(black, [(white,e,4),(white,d,5),(white,e,5),(black,f,4),(black,d,6),(black,e,6)], d,4, Nuboard).
+% friendinsight(d,4, DX, DY, black, [(white,e,4),(white,d,5),(white,e,5),(black,f,4),(black,d,6),(black,e,6)], Changes).
 % friendinsight(d,4, DX, DY, black, [(white,e,4),(white,d,5),(white,e,5),(black,f,4),(black,d,6)], Changes).
 % updateboard([(white, d, 5)], [(white, d, 5)],N).
 
