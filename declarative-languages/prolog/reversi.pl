@@ -87,11 +87,30 @@ makemove(Color, Board, X, Y, NewBoard) :- legalmove(Color, Board, X, Y), % check
 %
 % makemoves makes just some random moves ...
 makemoves(_,     Board, 0, [],    Board).%basecase
-makemoves(Color, Board, N, Moves, NewBoard) :-  N>0,
-                                                makemove(Color, Board, X, Y, TBoard),
-                                                swap(Color,Enemy), Nn is N-1, 
-                                                Moves = [(Color, X, Y) | TMoves],                       
-                                                makemoves(Enemy, TBoard, Nn, TMoves, NewBoard).
+makemoves(Color, Board, N, Moves, NewBoard) :-  
+  makemoves(Color, Color, Board, N, Moves, NewBoard).
+
+makemoves(Color, OC, Board, N, Moves, NewBoard) :-  
+  N>0, Nn is N-1, 
+  swap(Color,Enemy), 
+  (
+    (Color == OC, % starting player makes a move
+    makemove(Color, Board, X, Y, TBoard)
+    ) 
+  ; 
+    (Color \== OC, % not starting player makes a move
+    findbestmove(Color, Board, 1, X, Y),  % opponent calculates one ahead
+    makemove(Color, Board, X, Y, TBoard)  % and chooses that move
+    )
+  ;
+    (not(legalmove(Color, Board, _, _)), % no legal move: (Color,n,n)
+    TBoard = Board,
+    X=n, Y=n 
+    )
+  ),
+  makemoves(Enemy, OC, TBoard, Nn, TMoves, NewBoard), % continue with other player
+  Moves = [(Color, X, Y) | TMoves]. % append move
+                                                
 % makemoves(black, [(white,d,4),(black,e,4),(black,d,5),(white,e,5)], 2, Moves, Nuboard).
 % makemoves(black, [(white,e,4),(white,d,5),(white,e,5),(black,f,4),(black,d,6),(black,e,6)], 5, Moves, Nuboard).
 % makemove(black, [(white,d,4),(black,e,4),(black,d,5),(white,e,5)], c,4, Nuboard).              
@@ -136,13 +155,27 @@ valueof(_, [], 0). %base case, empty field is 0 for every player
 %step, consider all moves of the current player but only one for the opponent. This can be
 %achieved by choosing a greedy approach of the opponent, i.e. only looking ahead one
 %move using the predicate findbestmove. Again, feel free to try out different approaches.
-%findbestmove(Color, Board, N, X, Y) :- makemoves(Color, Board, N, [(Color,X,Y)|Moves], NewBoard), findbestmove(Color, NewBoard, Nn, _, _).
-vmovs(Color, Board, N, X, Y, V) :- makemoves(Color, Board, N, [(Color,X,Y)|_], NewBoard), valueof(Color, NewBoard, V).
-bestmov(Color, Board, N, Xs, Ys, Value) :- findall(((Color,X,Y),V), vmovs(Color, Board, N, X, Y, V), VMoves), fmax(VMoves, ((Color, Xs, Ys), Value)).
+findbestmove(Color, Board, N, X, Y) :-
+  bestmov(Color, Board, N, X, Y, _).  % find best move
+                                        
+
+
+vmovs(Color, Board, N, X, Y, V) :- 
+  makemoves(Color, Board, N, [(Color,X,Y)|_], NewBoard), 
+  valueof(Color, NewBoard, V). %value move
+
+bestmov(Color, Board, N, Xs, Ys, Value) :- 
+  findall(((Color,X,Y),V), vmovs(Color, Board, N, X, Y, V), VMoves),  %gather valued moves
+  fmax(VMoves, ((Color, Xs, Ys), Value)).  %find the maximum
  
-fmax( [],(MM,MV)) :- MM = (white,a,0), MV = (-1). 
-fmax([(M,V)|Moves],Best) :- fmax(Moves, (M2,V2)), ((V >= V2, Best = (M,V));(V < V2, Best = (M2,V2))). %sths wrong ... :S 
-% todo also there are too many equal solutions suggested!
+fmax([(M,V)],(M,V)).%MM = (white,a,0), MV = (-1). 
+fmax([(M,V)|Moves],Best) :- 
+  fmax(Moves, (M2,V2)), 
+  (
+    (V >= V2, Best = (M,V))
+  ;
+    (V < V2, Best = (M2,V2))
+  ).
 
 %vmovs(black, [(white,d,4),(black,e,4),(black,d,5),(white,e,5)], 2, X,Y, Value).
 %bestmov(black, [(white,d,4),(black,e,4),(black,d,5),(white,e,5)], 2, X,Y, Value).
