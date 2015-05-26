@@ -1,0 +1,9 @@
+In the following, assume no other bindings than the above two predicates.
+Now, is there any functional difference in the following two goals?
+
+not(notmember(A, [b, c, d, e])).
+member(A, [b, c, d, e]).
+
+Explain your conclusion.
+
+There is: While both will be true/false in the same cases, the first one will never assign A but the second one does.

@@ -1,0 +1,16 @@
+What is the logical equivalent of the following programs:
+a:
+  p :- c.
+  p :- a,b.
+b:
+  p :- a,b.
+  p :- c,!,a.
+c:
+  p :- c,!.
+  p :- a,b.
+State a logical (boolean) expression equivalent to p.
+
+answers in C style
+a: p = c || (a&&b)
+b: p = (a&&b) || (c && a)
+c: p = c || (!c && a && b)

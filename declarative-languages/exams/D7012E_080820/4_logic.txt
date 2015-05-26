@@ -1,0 +1,16 @@
+Assignment 4: Logic 3p
+What is the logical equivalent of the following programs:
+a:
+  p :- a,b.
+  p :- c.
+b:
+  p :- a,!,b.
+  p :- c.
+c:
+  p :- c.
+  p :- a,!,b.
+State a logical (boolean) expression equivalent to p.
+
+a: p = (a && b) || c
+b: p = (a && b) || (!a && c)
+c: p = c || (a && b)
