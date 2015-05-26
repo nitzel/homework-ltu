@@ -86,10 +86,11 @@ makemove(Color, Board, X, Y, NewBoard) :- legalmove(Color, Board, X, Y), % check
 %the makemoves predicate will never fail.
 %
 % makemoves makes just some random moves ...
-makemoves(_,     Board, 0, [],    Board).%basecase
+
 makemoves(Color, Board, N, Moves, NewBoard) :-  
   makemoves(Color, Color, Board, N, Moves, NewBoard).
 
+makemoves(_, _,    Board, 0, [],    Board). %basecase
 makemoves(Color, OC, Board, N, Moves, NewBoard) :-  
   N>0, Nn is N-1, 
   swap(Color,Enemy), 
@@ -155,10 +156,11 @@ valueof(_, [], 0). %base case, empty field is 0 for every player
 %step, consider all moves of the current player but only one for the opponent. This can be
 %achieved by choosing a greedy approach of the opponent, i.e. only looking ahead one
 %move using the predicate findbestmove. Again, feel free to try out different approaches.
+%findbestmove(Color, Board, N, X, Y) :-
+%  bestmov(Color, Board, N, X, Y, _).  % find best move
+
 findbestmove(Color, Board, N, X, Y) :-
   bestmov(Color, Board, N, X, Y, _).  % find best move
-                                        
-
 
 vmovs(Color, Board, N, X, Y, V) :- 
   makemoves(Color, Board, N, [(Color,X,Y)|_], NewBoard), 
