@@ -67,6 +67,20 @@
 - ? To what rate RTCP will limit its traffic?
 - ? How much of RTCP bandwidth will be allocated to a particular receiver?
 - ? How much of RTCP bandwidth will be allocated to a particular sender?
+- 1. RTCP will limit its traffic:		
+  -	Session bandwidth `4*100kbps = 400 kbps`		
+  -	RTCP limits its traffic to `5%` of the session bandwidth		
+  -	then (`0.05 * 400`) is the rate that RTCP will limit its traffic.		
+  -		`= 20 kbps `	
+- 2. RTCP bandwidth will be allocated to a particular receiver:		
+  -	Each user is both sender & receiver where each one gets **20kbps** for RTCP packets as calculated		
+  -	protocol gives 25% to the sender		
+  - `= 20 * 0.25	= 5 kbps`		
+- 3. RTCP bandwidth will be allocated to a particular sender:		
+  -	protocol gives `75%` to the receiver		
+  -	`= 20 * 0.75 = 25 kbps`	
+  -	* one sender then will remain `N-1 = 3` users as receivers		
+  -	`= 15 kbps / 3 -> 5 kbps for receivers`
 - ANSWER `20kbps, 5kbps, 5kbps`
 
 ## Q7 True false
