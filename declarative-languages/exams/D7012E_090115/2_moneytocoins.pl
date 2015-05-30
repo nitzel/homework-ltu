@@ -18,6 +18,7 @@ test(V,R) :- exchange([500,100,50,20,10], V , R).
 test2(V,R) :- exchange([8,6,4,2], V , R).
 
 % works both, but both is way too slow if it does not find the result ... however ;)
+/*
 exchange([], Value, _) :- Value \= 0, fail.
 exchange(_, 0, []).
 exchange([C|ValueList], Value, ResultList) :- 
@@ -26,8 +27,8 @@ exchange([C|ValueList], Value, ResultList) :-
   V is Value - Nn*C,
   exchange(ValueList, V, ResList),
   ResultList = [N*C|ResList].
+*/
 
-/*
 exchange(_, 0, []).
 exchange(ValueList, Value, ResultList) :- 
   member(Coin, ValueList),  % choose one coin
@@ -36,5 +37,5 @@ exchange(ValueList, Value, ResultList) :-
   ((Coin > NValue, delete(ValueList,Coin,NValueList));(Coin =< NValue,NValueList=ValueList)),
   exchange(NValueList, NValue, List),
   ResultList = [Coin|List]. 
-*/
+
 
