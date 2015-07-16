@@ -5,8 +5,7 @@ note(_) :- true.
 % b)
 notmember(X,L):- note(mamber(X,L)).
 mamber(X,[X,_]). 
-mamber(X, [_|Rest]):-
-mamber(X, Rest).
+mamber(X, [_|Rest]):-mamber(X, Rest).
 /*
 In the following, assume no other bindings than the above two predicates.
 Now, will notmember(a, [b, c, d, e]) succeed? Explain why.
