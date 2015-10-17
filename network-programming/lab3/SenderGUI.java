@@ -348,9 +348,7 @@ public class SenderGUI {
 			public void keyPressed(KeyEvent evt){
 				switch(evt.getKeyCode()){
 				case KeyEvent.VK_ENTER:		// ENTER: press send-button
-					if(evt.isControlDown())
-						btnSend.doClick();
-					break;
+					btnSend.doClick();
 				case KeyEvent.VK_ESCAPE:	// ESC: empty input field
 					textContent.setText("");
 					break;

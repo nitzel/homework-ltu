@@ -56,22 +56,25 @@ public class ReceiverAgent extends Agent {
         ReceiveMessage rm = new ReceiveMessage();
         addBehaviour(rm);
     }
-
+    public void takeDown(){
+        try {  // deregister
+        	DFService.deregister(this); 
+    	}catch (Exception e) {}
+    }
     public class ReceiveMessage extends CyclicBehaviour {
 
         // Variable to Hold the content of the received Message
         private String Message_Performative;
         private String Message_Content;
         private String SenderName;
-        private String MyPlan;
 
 
         public void action() {
             //Receive a Message
-            ACLMessage msg = receive();
+            ACLMessage msg = getAgent().blockingReceive();
             if(msg != null) {
 
-                Message_Performative = msg.getPerformative(msg.getPerformative());
+                Message_Performative = ACLMessage.getPerformative(msg.getPerformative());
                 Message_Content = msg.getContent();
                 SenderName = msg.getSender().getName(); // getLocalName
 

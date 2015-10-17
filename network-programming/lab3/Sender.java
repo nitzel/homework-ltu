@@ -70,22 +70,6 @@ public class Sender extends Agent{
 			}
 		});
     	
-    	/// set up Agent
-        // Registration with the DF 
-        /*DFAgentDescription dfd = new DFAgentDescription();
-        ServiceDescription sd = new ServiceDescription();
-        sd.setType("SenderAgent");
-        sd.setName(getName());
-        sd.setOwnership("ExampleReceiversOfJADE");
-        sd.addOntologies("SenderAgent");
-        dfd.setName(getAID());
-        dfd.addServices(sd);
-        try {
-        	DFService.register(this,dfd);
-        } catch (FIPAException e) {
-        	System.err.println(getLocalName()+" registration with DF unsucceeded. Reason: "+e.getMessage());
-        	doDelete();
-        } */
         // receiver-behaviour to display received messages
     	this.addBehaviour(new ReceiveMessage());
     }
@@ -170,23 +154,11 @@ public class Sender extends Agent{
     }
 
     protected class ReceiveMessage extends CyclicBehaviour {
-
-        // Variable to Hold the content of the received Message
-        private String messagePerformative;
-        private String messageContent;
-        private String senderName;
-
         public void action() {
-            ACLMessage msg = receive();
+            ACLMessage msg = getAgent().blockingReceive(100);
             if(msg != null) {
-
-                messagePerformative = ACLMessage.getPerformative(msg.getPerformative());
-                messageContent = msg.getContent();
-                senderName = msg.getSender().getLocalName(); // getName() for GUID
-                
                 gui.addToReceived(new ACLMessageToString(msg));//("From `"+senderName+"` as `"+messagePerformative+"`:"+messageContent);
             }
-            this.done();
         }
     }
 }

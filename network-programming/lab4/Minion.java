@@ -15,10 +15,12 @@ public class Minion extends Agent{
 	BehaviourOpenTCPConnection tcpb;
     protected void setup() {    	
         System.out.println("Hello World! My name is " + getAID().getLocalName());
-        BehaviourReceiveMessage rm = new BehaviourReceiveMessage(this, 100);
-        //addBehaviour(rm);
-        tcpb = new BehaviourOpenTCPConnection(this, 1000, "TeamWhateverLB-1369488506.eu-west-1.elb.amazonaws.com", 2223);
+
+        tcpb = new BehaviourOpenTCPConnection(this, null, 2223);
         addBehaviour(tcpb);
+        addBehaviour(new BehaviourReceiveMessage(this));
+        
+        registerAgent();
     }
 
 	/** 
@@ -27,9 +29,10 @@ public class Minion extends Agent{
     protected void registerAgent(){
 	    DFAgentDescription dfd = new DFAgentDescription();
 	    ServiceDescription sd = new ServiceDescription();
-	    sd.setType("minion");
+	    sd.setType(Overseer.TYPE_MINION);
+        sd.setOwnership("ExampleReceiversOfJADE");
+        sd.addOntologies(Overseer.TYPE_MINION);
 	    sd.setName(getName());
-	    sd.addOntologies("minion");
 	    dfd.setName(getAID());
 	    dfd.addServices(sd);
 	    try {
@@ -42,8 +45,12 @@ public class Minion extends Agent{
     /**
      * if agent is stopped
      */
+    @Override
     protected void takeDown(){
     	tcpb.onEnd(); // close connections
+        try {  // deregister
+        	DFService.deregister(this); 
+    	}catch (Exception e) {}
     }
     
     /**
@@ -52,22 +59,22 @@ public class Minion extends Agent{
      *
      */
     protected class BehaviourReceiveMessage extends TickerBehaviour {
-		public BehaviourReceiveMessage(Agent agent, long period) {
-			super(agent, period);
+		
+    	public BehaviourReceiveMessage(Agent a) {
+			super(a, 100); // 100msec between the calls
 		}
 
-		@Override
-		protected void onTick() {
-			// TODO Auto-generated method stub
-
+		public void onTick() {
             //Receive a Message
             ACLMessage msg = receive();
             if(msg != null) {
+            	//System.out.println("Minion "+getLocalName()+" received message"+msg);
             	int performative = msg.getPerformative();
             	String content = msg.getContent();
             	
             	switch(performative){
             	case ACLMessage.PROPAGATE: // received new target
+                	System.out.println("type propagate");
             		String[] target = content.split(":");
             		if(target.length != 2){
             			System.err.println("Minion received invalid target `"+content+"`");
@@ -80,6 +87,7 @@ public class Minion extends Agent{
 					}
             		break;
             	case ACLMessage.CANCEL: // stop attack, delete agent
+                	System.out.println("type cancel");
             		getAgent().doDelete();
             		break;
             	default:
@@ -98,8 +106,8 @@ public class Minion extends Agent{
     	String target;
     	int targetPort;
     	java.util.Vector<Socket> sockets;
-    	public BehaviourOpenTCPConnection(Agent agent, long period, String target, int targetPort) {
-			super(agent, period);
+    	public BehaviourOpenTCPConnection(Agent agent, String target, int targetPort) {
+			super(agent, 1000); // 1000msec between the calls
 			sockets = new java.util.Vector<>();
 			this.setTarget(target, targetPort);
 		}
@@ -112,20 +120,19 @@ public class Minion extends Agent{
     	
 		@Override
 		protected void onTick() {
-			System.out.println("ticking minion");
+			//System.out.println("ticking minion");
 			new Thread(this).start();
 		}
 
 		@Override
 		public void run() {
-    		// TODO open TCP Connection
+			if(target == null || target.length()==0) return;
 			try {
 				Socket s = new Socket(target, targetPort);
 				sockets.add(s);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (Exception e) {
 				e.printStackTrace();
-			}
+			} 
 		}
 		
 		@Override
@@ -136,7 +143,7 @@ public class Minion extends Agent{
 					s.close();
 				} catch (IOException e) {}
 			}
-			return targetPort;
+			return 0;
 		}
     }
 }
