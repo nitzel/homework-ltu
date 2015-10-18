@@ -240,6 +240,7 @@ public class Overseer extends Agent{
 		protected void onTick() {
 			int spawnerNumNew = getReceivers(getAgent(), TYPE_SPAWNER).length;
 			if(spawnerNumNew != spawnerNum){
+				spawnerNum = spawnerNumNew;
 				// TODO resend the spawn minions message to spread them 
 			}
 			gui.setSpawnernum(spawnerNum + "");
