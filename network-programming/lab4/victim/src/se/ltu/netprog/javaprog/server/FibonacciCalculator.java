@@ -45,7 +45,7 @@ public class FibonacciCalculator implements Runnable {
         int iPrev1=0, iPrev2=1;
         
 	    LocalDateTime actDate = LocalDateTime.now();
-	    LocalDateTime nextDate = LocalDateTime.now().plusSeconds(30);
+	    LocalDateTime nextDate = LocalDateTime.now().plusSeconds(1);
 
 	    // Fibonacci numbers are the integer sequence 
         //0, 1, 1, 2, 3, 5, 8, 13, 21, ..., 
