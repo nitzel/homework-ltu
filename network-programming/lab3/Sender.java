@@ -16,6 +16,12 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
+/**
+ * Sender class which runs the GUI to communicate with a receiver agent 
+ * Run with arguments -container -container-name SenderContainer "S1:lab3.Sender;S2:lab3.Sender"
+ * @author cm
+ *
+ */
 public class Sender extends Agent{
 	SenderGUI gui;
     protected void setup() {

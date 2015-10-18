@@ -26,7 +26,7 @@ import javax.swing.ListSelectionModel;
  * A GUI to be used with the Sender-Agent.
  * It offers a wide interface to receive/alter the displayed and install listeners
  * to some of the widgets.
- * Run with arguments -container -container-name SenderContainer "S1:lab3.Sender;S2:lab3.Sender"
+ * 
  */
 public class SenderGUI {
 	/**
