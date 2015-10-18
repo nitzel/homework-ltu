@@ -12,24 +12,24 @@ import jade.lang.acl.ACLMessage;
 
 @SuppressWarnings("serial")
 public class Minion extends Agent{
-	BehaviourOpenTCPConnection tcpb;
+	protected BehaviourOpenTCPConnection tcpb;
+	protected Agent owner;
 	
     protected void setup() {    	
         System.out.println("Hello World! My name is " + getAID().getLocalName());
 
+        registerAgent();
+        
         tcpb = new BehaviourOpenTCPConnection(this, 1000, null, 2223);
         addBehaviour(tcpb);
         addBehaviour(new BehaviourReceiveMessage(this, 100));
-        addBehaviour(new BehaviourKillIfOverseerIsDead(this, 1000));
-        
-        registerAgent();
+        addBehaviour(new BehaviourKillIfOwnerIsDead(this, 1000, owner));
     }
 
 	/** 
 	 * Registration with the DF 
 	 */
     protected void registerAgent(){
-    	Agent owner = null;
     	Object [] args = getArguments();
     	if(args!=null){
     		Object tmp = args[0];
@@ -98,6 +98,11 @@ public class Minion extends Agent{
 						System.err.println("Minion can't parse port: `"+target[1]+"`");
 					}
             		break;
+            	case ACLMessage.INFORM: // new interval
+            		int interval = Integer.parseInt(content);
+            		System.out.println(getAgent().getLocalName()+" changed period to "+interval);
+            		tcpb.reset(interval);
+            		break;
             	case ACLMessage.CANCEL: // stop attack, delete agent
             		getAgent().doDelete();
             		break;
@@ -109,23 +114,24 @@ public class Minion extends Agent{
     }
     
     /**
-     * checks if there is still an overseer alive
+     * checks if there it's spawner is still around
      * if not, the agent kills itself
      * @author nitzel
      *
      */
-    protected class BehaviourKillIfOverseerIsDead extends TickerBehaviour {
-		public BehaviourKillIfOverseerIsDead(Agent agent, long period) {
+    protected class BehaviourKillIfOwnerIsDead extends TickerBehaviour {
+    	Agent owner;
+		public BehaviourKillIfOwnerIsDead(Agent agent, long period, Agent owner) {
 			super(agent, period);
+			this.owner = owner;
 		}
-
 		@Override
 		protected void onTick() {
-			int overseerNum = Overseer.getReceivers(getAgent(), Overseer.TYPE_OVERSEER).length;
-			if(overseerNum==0)
+			if(owner == null) return;
+			int ownerNum = Overseer.getReceivers(getAgent(), Overseer.TYPE_SPAWNER, Overseer.GET_RECEIVERS_ALL, null, owner.getName()).length;
+			if(ownerNum==0)
 				getAgent().doDelete();
 		}
-    	
     }
     
     /**
@@ -140,6 +146,7 @@ public class Minion extends Agent{
     	//java.util.Vector<Socket> sockets; // list of open connections
     	public BehaviourOpenTCPConnection(Agent agent, long period, String target, int targetPort) {
 			super(agent, period);
+
 			//sockets = new java.util.Vector<>();
 			this.setTarget(target, targetPort);
 		}

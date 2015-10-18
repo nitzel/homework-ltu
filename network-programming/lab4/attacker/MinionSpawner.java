@@ -16,13 +16,14 @@ import jade.wrapper.StaleProxyException;
 
 @SuppressWarnings("serial")
 public class MinionSpawner extends Agent{
+	
     protected void setup() {    	
         System.out.println("Hello World! My name is " + getAID().getLocalName());
         
-        BehaviourReceiveMessage rm = new BehaviourReceiveMessage(this, new Random().nextInt());
-        addBehaviour(rm);
-        
         registerAgent();
+        
+        addBehaviour(new BehaviourKillIfOverseerIsDead(this, 1000));
+        addBehaviour(new BehaviourReceiveMessage(this, 100, new Random().nextInt()));
     }
 
 	/** 
@@ -58,6 +59,7 @@ public class MinionSpawner extends Agent{
     		System.out.println("killing "+receivers[i]);
     		recvs[i]=receivers[i];
     	}
+    	
     	sendMsg(ACLMessage.CANCEL, recvs, null);
     }
     protected void sendMsg(int performative, String[] receivers, String content){
@@ -78,15 +80,15 @@ public class MinionSpawner extends Agent{
      */
     protected class BehaviourReceiveMessage extends TickerBehaviour {
     	int id, counter;
-    	public BehaviourReceiveMessage(Agent a, int id) {
-    		super(a, 100); // 100msec between calls
+    	public BehaviourReceiveMessage(Agent a, long period, int id) {
+    		super(a, period); // 100msec between calls
 			this.id = id; // id of the spawner
 			this.counter = 0; // id + counter = id of Minion
 		}
 		@Override
 		public void onTick() {
             //Receive a Message
-            ACLMessage msg = blockingReceive(100);
+            ACLMessage msg = receive();
             if(msg != null) {
             	int performative = msg.getPerformative();
             	String content = msg.getContent();
@@ -124,6 +126,24 @@ public class MinionSpawner extends Agent{
             		System.err.println("Spawner received unkown performative:"+performative+"/content"+content);
             	}
             }
+		}
+    }
+    
+    /**
+     * checks if there is still an overseer alive
+     * if not, the agent kills itself
+     * @author nitzel
+     *
+     */
+    protected class BehaviourKillIfOverseerIsDead extends TickerBehaviour {
+		public BehaviourKillIfOverseerIsDead(Agent agent, long period) {
+			super(agent, period);
+		}
+		@Override
+		protected void onTick() {
+			int overseerNum = Overseer.getReceivers(getAgent(), Overseer.TYPE_OVERSEER, Overseer.GET_RECEIVERS_ALL).length;
+			if(overseerNum==0)
+				getAgent().doDelete();
 		}
     }
 }

@@ -2,8 +2,8 @@ package lab4;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import jade.core.AID;
 
@@ -15,7 +15,11 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
-// TODO end if window closes
+/*
+-gui
+-jade_domain_df_maxresult 100000
+"Overseer:lab4.Overseer;Spawner1:lab4.MinionSpawner;Spanner2:lab4.MinionSpawner;stdminion:lab4.Minion;stdminion2:lab4.Minion;stdminion3:lab4.Minion"
+ */
 
 /**
  * coordinates the attacking minions and creates new
@@ -25,10 +29,11 @@ import jade.lang.acl.ACLMessage;
 @SuppressWarnings("serial")
 public class Overseer extends Agent{
 	public static String TYPE_MINION = "minion";
-	public static String TYPE_SPAWNER = "minionspawner";
-	public static String TYPE_OVERSEER = "minionoverseer";
+	public static String TYPE_SPAWNER = "nefario";
+	public static String TYPE_OVERSEER = "gru";
 	public static int GET_RECEIVERS_ALL = -1;
 	protected OverseerGUI gui;
+	protected int spawnerNum = 0;
 	
     protected void setup() {
         // setup GUI
@@ -39,23 +44,12 @@ public class Overseer extends Agent{
     	gui.addButtonActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JButton source = (JButton) e.getSource();
 				switch(e.getActionCommand()){
 				case OverseerGUI.CMD_SET_TARGET: // update receiver list
-					// reconfigure button
-					source.setText("   HALT!   ");
-					source.setToolTipText("Click to pause attack");
-					source.setActionCommand(OverseerGUI.CMD_PAUSE_ATTACK);
-					// do it!
 					System.out.println("sending new target "+gui.getTarget());
 					sendMsgTarget(gui.getTarget());
 					break;
 				case OverseerGUI.CMD_PAUSE_ATTACK: // update receiver list
-					// reconfigure button
-					source.setText("BANANA!");
-					source.setToolTipText("Click to set target for all minions and attack");
-					source.setActionCommand(OverseerGUI.CMD_SET_TARGET);
-					// do it!
 					System.out.println("stopping");
 					sendMsgTarget(":0");
 					break;
@@ -64,13 +58,24 @@ public class Overseer extends Agent{
 					System.out.println("setting minionAmount to "+newAmount);
 					sendMsgSpawn(newAmount);
 					break;
+				case OverseerGUI.CMD_SET_INTERVAL:
+					int newInterval = gui.getInterval();
+					System.out.println("setting minion interval to "+newInterval);
+					sendMsgInterval(newInterval);
+					break;
 				}
 			}
     	});
+    	gui.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e){
+				doDelete();
+			}
+		});
     	
         ReceiveMessageBehaviour rm = new ReceiveMessageBehaviour(this, 10);
         addBehaviour(rm);    
-        addBehaviour( new UpdateBehaviour(this,800));
+        addBehaviour( new UpdateBehaviour(this,1000));
         
         registerAgent();
     }
@@ -119,6 +124,11 @@ public class Overseer extends Agent{
     	
     	return num; //numPerSpawner*receivers.length;
     }
+    protected void sendMsgInterval(int interval){
+    	String[] receivers = getReceivers(this, Overseer.TYPE_MINION);
+    	sendMsg(ACLMessage.INFORM, receivers, interval+"");
+    }
+    
     protected void sendMsgKill(int num){
     	String[] receivers = getReceivers(this, Overseer.TYPE_MINION, num);
     	sendMsg(ACLMessage.CANCEL, receivers, null);
@@ -142,10 +152,13 @@ public class Overseer extends Agent{
     }
     
     static public String[] getReceivers(Agent agent, String type){
-    	return getReceivers(agent, type, Overseer.GET_RECEIVERS_ALL, null);
+    	return getReceivers(agent, type, Overseer.GET_RECEIVERS_ALL, null, null);
     }
     static public String[] getReceivers(Agent agent, String type, int max){
-    	return getReceivers(agent, type, max, null);
+    	return getReceivers(agent, type, max, null, null);
+    }
+    static public String[] getReceivers(Agent agent, String type, int max, Agent owner){
+    	return getReceivers(agent, type, max, owner, null);
     }
     /**
      * 
@@ -154,7 +167,7 @@ public class Overseer extends Agent{
      * @param owner The one to own the search clients
      * @return
      */
-	static public String[] getReceivers(Agent agent, String type, int max, Agent owner){
+	static public String[] getReceivers(Agent agent, String type, int max, Agent owner, String name){
     	/*
     	http://www.iro.umontreal.ca/~vaucher/Agents/Jade/primer5.html
     	To search the DF, you must create a DFD [with no AID] where the relevant fields are initialised 
@@ -166,7 +179,10 @@ public class Overseer extends Agent{
     	searchConstraints where you specify the max number of replies (-1 means ALL). */
         DFAgentDescription dfd = new DFAgentDescription();
         ServiceDescription sd  = new ServiceDescription();
-        sd.setType(type);
+        if(type != null)
+        	sd.setType(type);
+        if(name != null)
+        	sd.setName(name);
         if(owner != null)
         	sd.setOwnership(owner.getName());
         dfd.addServices(sd);
@@ -222,7 +238,11 @@ public class Overseer extends Agent{
 
 		@Override
 		protected void onTick() {
-			gui.setSpawnernum(getReceivers(getAgent(), TYPE_SPAWNER).length+"");
+			int spawnerNumNew = getReceivers(getAgent(), TYPE_SPAWNER).length;
+			if(spawnerNumNew != spawnerNum){
+				// TODO resend the spawn minions message to spread them 
+			}
+			gui.setSpawnernum(spawnerNum + "");
 			gui.setCurrent(getReceivers(getAgent(), TYPE_MINION).length);
 		}
     }

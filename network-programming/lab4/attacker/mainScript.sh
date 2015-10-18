@@ -1,2 +1,2 @@
-#/bin/bash
-echo "Hallo Welt"
+#!/bin/bash
+./startspawnernode.sh
