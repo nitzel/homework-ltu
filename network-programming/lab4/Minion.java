@@ -1,6 +1,5 @@
 package lab4;
 
-import java.io.IOException;
 import java.net.Socket;
 
 import jade.core.Agent;
@@ -11,14 +10,17 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
+@SuppressWarnings("serial")
 public class Minion extends Agent{
 	BehaviourOpenTCPConnection tcpb;
+	
     protected void setup() {    	
         System.out.println("Hello World! My name is " + getAID().getLocalName());
 
-        tcpb = new BehaviourOpenTCPConnection(this, null, 2223);
+        tcpb = new BehaviourOpenTCPConnection(this, 1000, null, 2223);
         addBehaviour(tcpb);
-        addBehaviour(new BehaviourReceiveMessage(this));
+        addBehaviour(new BehaviourReceiveMessage(this, 100));
+        addBehaviour(new BehaviourKillIfOverseerIsDead(this, 1000));
         
         registerAgent();
     }
@@ -27,12 +29,24 @@ public class Minion extends Agent{
 	 * Registration with the DF 
 	 */
     protected void registerAgent(){
+    	Agent owner = null;
+    	Object [] args = getArguments();
+    	if(args!=null){
+    		Object tmp = args[0];
+    		if(Agent.class.isInstance(tmp)){
+    			owner = (Agent)tmp;
+    		}
+    	}
 	    DFAgentDescription dfd = new DFAgentDescription();
 	    ServiceDescription sd = new ServiceDescription();
 	    sd.setType(Overseer.TYPE_MINION);
         sd.setOwnership("ExampleReceiversOfJADE");
         sd.addOntologies(Overseer.TYPE_MINION);
 	    sd.setName(getName());
+	    if(owner!=null){
+	    	System.out.println("setting owner of "+getLocalName()+" to: " + owner.getName());
+	    	sd.setOwnership(owner.getName());
+	    }
 	    dfd.setName(getAID());
 	    dfd.addServices(sd);
 	    try {
@@ -60,21 +74,19 @@ public class Minion extends Agent{
      */
     protected class BehaviourReceiveMessage extends TickerBehaviour {
 		
-    	public BehaviourReceiveMessage(Agent a) {
-			super(a, 100); // 100msec between the calls
+    	public BehaviourReceiveMessage(Agent a, long period) {
+			super(a, period); // 100msec between the calls
 		}
 
 		public void onTick() {
             //Receive a Message
             ACLMessage msg = receive();
             if(msg != null) {
-            	//System.out.println("Minion "+getLocalName()+" received message"+msg);
             	int performative = msg.getPerformative();
             	String content = msg.getContent();
             	
             	switch(performative){
             	case ACLMessage.PROPAGATE: // received new target
-                	System.out.println("type propagate");
             		String[] target = content.split(":");
             		if(target.length != 2){
             			System.err.println("Minion received invalid target `"+content+"`");
@@ -87,7 +99,6 @@ public class Minion extends Agent{
 					}
             		break;
             	case ACLMessage.CANCEL: // stop attack, delete agent
-                	System.out.println("type cancel");
             		getAgent().doDelete();
             		break;
             	default:
@@ -96,6 +107,27 @@ public class Minion extends Agent{
             }
 		}
     }
+    
+    /**
+     * checks if there is still an overseer alive
+     * if not, the agent kills itself
+     * @author nitzel
+     *
+     */
+    protected class BehaviourKillIfOverseerIsDead extends TickerBehaviour {
+		public BehaviourKillIfOverseerIsDead(Agent agent, long period) {
+			super(agent, period);
+		}
+
+		@Override
+		protected void onTick() {
+			int overseerNum = Overseer.getReceivers(getAgent(), Overseer.TYPE_OVERSEER).length;
+			if(overseerNum==0)
+				getAgent().doDelete();
+		}
+    	
+    }
+    
     /**
      * Opens a tcp connection :)
      * Is runnable to be non-blocking
@@ -105,10 +137,10 @@ public class Minion extends Agent{
     protected class BehaviourOpenTCPConnection extends TickerBehaviour implements Runnable{
     	String target;
     	int targetPort;
-    	java.util.Vector<Socket> sockets;
-    	public BehaviourOpenTCPConnection(Agent agent, String target, int targetPort) {
-			super(agent, 1000); // 1000msec between the calls
-			sockets = new java.util.Vector<>();
+    	//java.util.Vector<Socket> sockets; // list of open connections
+    	public BehaviourOpenTCPConnection(Agent agent, long period, String target, int targetPort) {
+			super(agent, period);
+			//sockets = new java.util.Vector<>();
 			this.setTarget(target, targetPort);
 		}
     	
@@ -120,7 +152,6 @@ public class Minion extends Agent{
     	
 		@Override
 		protected void onTick() {
-			//System.out.println("ticking minion");
 			new Thread(this).start();
 		}
 
@@ -129,7 +160,8 @@ public class Minion extends Agent{
 			if(target == null || target.length()==0) return;
 			try {
 				Socket s = new Socket(target, targetPort);
-				sockets.add(s);
+				//sockets.add(s); //add socket to list
+				s.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 
@@ -137,12 +169,11 @@ public class Minion extends Agent{
 		
 		@Override
 		public int onEnd(){
-			System.out.println("ending minions ticker behaviour");
-			for(Socket s : sockets){
+			/*for(Socket s : sockets){ // close all open sockets
 				try {
 					s.close();
 				} catch (IOException e) {}
-			}
+			}*/
 			return 0;
 		}
     }

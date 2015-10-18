@@ -3,11 +3,9 @@ package lab4;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+
 import jade.core.AID;
-
-// jade.core.replication
-// jade.core.management
-
 
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
@@ -17,16 +15,19 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
+// TODO end if window closes
+
 /**
  * coordinates the attacking minions and creates new
  * @author nitzel
  *
  */
+@SuppressWarnings("serial")
 public class Overseer extends Agent{
 	public static String TYPE_MINION = "minion";
 	public static String TYPE_SPAWNER = "minionspawner";
 	public static String TYPE_OVERSEER = "minionoverseer";
-	
+	public static int GET_RECEIVERS_ALL = -1;
 	protected OverseerGUI gui;
 	
     protected void setup() {
@@ -38,36 +39,38 @@ public class Overseer extends Agent{
     	gui.addButtonActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				JButton source = (JButton) e.getSource();
 				switch(e.getActionCommand()){
 				case OverseerGUI.CMD_SET_TARGET: // update receiver list
+					// reconfigure button
+					source.setText("   HALT!   ");
+					source.setToolTipText("Click to pause attack");
+					source.setActionCommand(OverseerGUI.CMD_PAUSE_ATTACK);
+					// do it!
 					System.out.println("sending new target "+gui.getTarget());
 					sendMsgTarget(gui.getTarget());
 					break;
+				case OverseerGUI.CMD_PAUSE_ATTACK: // update receiver list
+					// reconfigure button
+					source.setText("BANANA!");
+					source.setToolTipText("Click to set target for all minions and attack");
+					source.setActionCommand(OverseerGUI.CMD_SET_TARGET);
+					// do it!
+					System.out.println("stopping");
+					sendMsgTarget(":0");
+					break;
 				case OverseerGUI.CMD_SET_MINIONS:
-					System.out.println("set new minions");
-					int diff = gui.getDiff();
-					if(diff > 0){
-						System.out.println("creating "+diff);
-						sendMsgSpawn(diff);
-					} else {
-						diff *= -1;
-						System.out.println("killing "+diff);
-						sendMsgKill(diff);
-					}
+					int newAmount = gui.getNew();
+					System.out.println("setting minionAmount to "+newAmount);
+					sendMsgSpawn(newAmount);
 					break;
 				}
-				System.out.println("done");
 			}
     	});
-        
-        
-        
-        
-        
-        System.out.println("Hello World! My name is " + getAID().getLocalName());
+    	
         ReceiveMessageBehaviour rm = new ReceiveMessageBehaviour(this, 10);
         addBehaviour(rm);    
-        addBehaviour( new UpdateBehaviour(this,500));
+        addBehaviour( new UpdateBehaviour(this,800));
         
         registerAgent();
     }
@@ -92,31 +95,37 @@ public class Overseer extends Agent{
         }
     }
     /**
-     * @param num Minions to spawn
+     * @param num Minions to have per spawner
      * @return spawned minions
      */
     protected int sendMsgSpawn(int num){
-    	// TODO spread evenly depending on usage
-    	String[] receivers = getReceivers(Overseer.TYPE_SPAWNER);
+    	String[] receivers = getReceivers(this, Overseer.TYPE_SPAWNER);
     	if(receivers.length==0){
     		System.err.println("no spawners");
     		return 0;
     	}
-    	int numPerSpawner = num/receivers.length;
-    	sendMsg(ACLMessage.REQUEST, receivers, numPerSpawner+"");
+    	//int numPerSpawner = num/receivers.length;
+    	//sendMsg(ACLMessage.REQUEST, receivers, numPerSpawner+"");
     	
-    	return numPerSpawner*receivers.length;
+    	
+    	// spread evenly on spawners
+    	for(int i = receivers.length; i>0; i--){
+    		int minionsToOwn = num / i;
+    		
+    		sendMsg(ACLMessage.REQUEST, receivers[i-1], minionsToOwn+"");
+    		
+    		num -= minionsToOwn;
+    	}
+    	
+    	return num; //numPerSpawner*receivers.length;
     }
     protected void sendMsgKill(int num){
-    	String[] receivers = getReceivers(Overseer.TYPE_MINION, num);
+    	String[] receivers = getReceivers(this, Overseer.TYPE_MINION, num);
     	sendMsg(ACLMessage.CANCEL, receivers, null);
     }
     protected void sendMsgTarget(String target){
-    	System.out.println("getting receivers");
-    	String[] receivers = getReceivers(Overseer.TYPE_MINION);
-    	System.out.println("sending message");
+    	String[] receivers = getReceivers(this, Overseer.TYPE_MINION);
     	sendMsg(ACLMessage.PROPAGATE, receivers, target);
-    	System.out.println("target set!");
     }
     protected void sendMsg(int performative, String receiver, String content){
     	sendMsg(performative, new String[]{receiver}, content);
@@ -124,9 +133,7 @@ public class Overseer extends Agent{
     protected void sendMsg(int performative, String[] receivers, String content){
         ACLMessage msg = new ACLMessage(performative);
         for(String receiver : receivers){
-        	System.out.print("+"+receiver);
         	msg.addReceiver(new AID(receiver, AID.ISGUID));
-        	System.out.println("!");
         }
         if(content!=null)
         	msg.setContent(content);
@@ -134,16 +141,20 @@ public class Overseer extends Agent{
         send(msg);
     }
     
-    protected String[] getReceivers(String type){
-    	return getReceivers(type, -1);
+    static public String[] getReceivers(Agent agent, String type){
+    	return getReceivers(agent, type, Overseer.GET_RECEIVERS_ALL, null);
+    }
+    static public String[] getReceivers(Agent agent, String type, int max){
+    	return getReceivers(agent, type, max, null);
     }
     /**
      * 
      * @param type
      * @param max Maximum amount of receivers to be returned. max=-1 takes all
+     * @param owner The one to own the search clients
      * @return
      */
-	protected String[] getReceivers(String type, int max){
+	static public String[] getReceivers(Agent agent, String type, int max, Agent owner){
     	/*
     	http://www.iro.umontreal.ca/~vaucher/Agents/Jade/primer5.html
     	To search the DF, you must create a DFD [with no AID] where the relevant fields are initialised 
@@ -156,17 +167,25 @@ public class Overseer extends Agent{
         DFAgentDescription dfd = new DFAgentDescription();
         ServiceDescription sd  = new ServiceDescription();
         sd.setType(type);
+        if(owner != null)
+        	sd.setOwnership(owner.getName());
         dfd.addServices(sd);
+        
+        //jade.domain.FIPAAgentManagement.SearchConstraints searchParams = new jade.domain.FIPAAgentManagement.SearchConstraints();
+        //searchParams.setMaxResults(1000L);
+        //searchParams.setMaxDepth(1000L);
         
         DFAgentDescription[] agents;
 		try {
-			agents = DFService.search(this, dfd);
+			agents = DFService.search(agent, dfd);
 		} catch (FIPAException e) {
 			//e.printStackTrace();
 			agents = new DFAgentDescription[0]; // say we didnt find any
 		}
+		if(type.equals(Overseer.TYPE_MINION))
+			System.err.println("Found "+agents.length+" agents of "+type);
 		// convert agents to string array with their names
-		int len = Math.min(agents.length, max==-1?agents.length:max);
+		int len = Math.min(agents.length, (max==Overseer.GET_RECEIVERS_ALL)?agents.length:max);
 
 		String[] result = new String[len];
 
@@ -180,6 +199,7 @@ public class Overseer extends Agent{
         try {  // deregister
         	DFService.deregister(this); 
     	}catch (Exception e) {}
+        gui.close();
     }
     public class ReceiveMessageBehaviour extends TickerBehaviour {
         
@@ -202,8 +222,8 @@ public class Overseer extends Agent{
 
 		@Override
 		protected void onTick() {
-			gui.setSpawnernum(getReceivers(TYPE_SPAWNER).length+"");
-			gui.setCurrent(getReceivers(TYPE_MINION).length);
+			gui.setSpawnernum(getReceivers(getAgent(), TYPE_SPAWNER).length+"");
+			gui.setCurrent(getReceivers(getAgent(), TYPE_MINION).length);
 		}
     }
 }

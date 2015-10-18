@@ -18,9 +18,12 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 
+// TODO add onClose callback
 public class OverseerGUI {
 	public static final String CMD_SET_TARGET = "settarget";
+	public static final String CMD_PAUSE_ATTACK = "pauseattack";
 	public static final String CMD_SET_MINIONS = "setminions";
 
 	private JFrame frmWhateversOverseer;
@@ -106,9 +109,9 @@ public class OverseerGUI {
 		frmWhateversOverseer = new JFrame();
 		frmWhateversOverseer.setTitle("Whatevers overseer");
 		frmWhateversOverseer.setBounds(100, 100, 457, 166);
-		frmWhateversOverseer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmWhateversOverseer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 77, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -142,9 +145,10 @@ public class OverseerGUI {
 		frmWhateversOverseer.getContentPane().add(textTarget, gbc_textTarget);
 		textTarget.setColumns(10);
 		
-		btnSetTarget = new JButton("set");
-		btnSetTarget.setToolTipText("sets the target for all minions");
+		btnSetTarget = new JButton("BANANA!");
+		btnSetTarget.setToolTipText("Click to set target for all minions and attack");
 		GridBagConstraints gbc_btnSetTarget = new GridBagConstraints();
+		gbc_btnSetTarget.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSetTarget.insets = new Insets(0, 0, 5, 0);
 		gbc_btnSetTarget.gridx = 6;
 		gbc_btnSetTarget.gridy = 0;
@@ -159,11 +163,12 @@ public class OverseerGUI {
 		frmWhateversOverseer.getContentPane().add(lblMinions, gbc_lblMinions);
 		
 		slider = new JSlider();
+		slider.setMaximum(10000);
 		slider.setPaintLabels(true);
 		slider.setPaintTicks(true);
 		slider.setPaintTrack(false);
-		slider.setMajorTickSpacing(10);
-		slider.setMinorTickSpacing(2);
+		slider.setMajorTickSpacing(1000);
+		slider.setMinorTickSpacing(250);
 		slider.setValue(0);
 		GridBagConstraints gbc_slider = new GridBagConstraints();
 		gbc_slider.fill = GridBagConstraints.HORIZONTAL;
@@ -175,7 +180,7 @@ public class OverseerGUI {
 		
 		JLabel lblCurrent = new JLabel("Current:");
 		GridBagConstraints gbc_lblCurrent = new GridBagConstraints();
-		gbc_lblCurrent.anchor = GridBagConstraints.EAST;
+		gbc_lblCurrent.anchor = GridBagConstraints.WEST;
 		gbc_lblCurrent.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCurrent.gridx = 0;
 		gbc_lblCurrent.gridy = 2;
@@ -185,7 +190,6 @@ public class OverseerGUI {
 		spinCurrent.setModel(new SpinnerNumberModel(new Integer(0), null, null, new Integer(1)));
 		spinCurrent.setToolTipText("The amount of currently running minions");
 		spinCurrent.setEnabled(false);
-		spinCurrent.setValue(1000); //TODO remove
 		GridBagConstraints gbc_spinCurrent = new GridBagConstraints();
 		gbc_spinCurrent.fill = GridBagConstraints.HORIZONTAL;
 		gbc_spinCurrent.insets = new Insets(0, 0, 5, 5);
@@ -193,9 +197,9 @@ public class OverseerGUI {
 		gbc_spinCurrent.gridy = 2;
 		frmWhateversOverseer.getContentPane().add(spinCurrent, gbc_spinCurrent);
 		
-		JLabel lblNewLabel = new JLabel("New:");
+		JLabel lblNewLabel = new JLabel("Desired:");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.gridx = 2;
 		gbc_lblNewLabel.gridy = 2;
@@ -212,7 +216,7 @@ public class OverseerGUI {
 		
 		JLabel lblNewLabel_1 = new JLabel("Diff:");
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_1.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_1.gridx = 4;
 		gbc_lblNewLabel_1.gridy = 2;
@@ -228,8 +232,9 @@ public class OverseerGUI {
 		frmWhateversOverseer.getContentPane().add(spinDiff, gbc_spinDiff);
 		
 		btnSetNumber = new JButton("set");
-		btnSetNumber.setToolTipText("adds/removes DIFF amount of minions");
+		btnSetNumber.setToolTipText("sets the new amount of minion to desired");
 		GridBagConstraints gbc_btnSetNumber = new GridBagConstraints();
+		gbc_btnSetNumber.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSetNumber.insets = new Insets(0, 0, 5, 0);
 		gbc_btnSetNumber.gridx = 6;
 		gbc_btnSetNumber.gridy = 2;
@@ -298,6 +303,13 @@ public class OverseerGUI {
 		};
 		spinNew.addKeyListener(changeNumber);
 		spinDiff.addKeyListener(changeNumber);
+	}
+	
+	/**
+	 * Closes the window
+	 */
+	public void close(){
+		frmWhateversOverseer.dispatchEvent(new WindowEvent(frmWhateversOverseer, WindowEvent.WINDOW_CLOSING));
 	}
 
 }

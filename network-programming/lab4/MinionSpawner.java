@@ -2,6 +2,7 @@ package lab4;
 
 import java.util.Random;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
@@ -10,8 +11,10 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentContainer;
+import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
+@SuppressWarnings("serial")
 public class MinionSpawner extends Agent{
     protected void setup() {    	
         System.out.println("Hello World! My name is " + getAID().getLocalName());
@@ -48,6 +51,26 @@ public class MinionSpawner extends Agent{
     	}catch (Exception e) {}
     }
     
+    protected void sendMsgKill(String[] receivers, int num){
+    	String[] recvs = new String[num];
+    	System.out.println(".........killing "+num+" of "+receivers.length);
+    	for(int i=0; i<Math.min(num, receivers.length); i++){
+    		System.out.println("killing "+receivers[i]);
+    		recvs[i]=receivers[i];
+    	}
+    	sendMsg(ACLMessage.CANCEL, recvs, null);
+    }
+    protected void sendMsg(int performative, String[] receivers, String content){
+        ACLMessage msg = new ACLMessage(performative);
+        for(String receiver : receivers){
+        	msg.addReceiver(new AID(receiver, AID.ISGUID));
+        }
+        if(content!=null)
+        	msg.setContent(content);
+        
+        send(msg);
+    }
+    
     /**
 	 * Receives Messages and spawns minions
      * @author nitzel
@@ -70,16 +93,31 @@ public class MinionSpawner extends Agent{
             	
             	switch(performative){
             	case ACLMessage.REQUEST: // start new agents
-            		int num = Integer.parseInt(content)+counter;
-            		System.out.println("spawn "+content+" new minions! :)");
+            		int num = Integer.parseInt(content);
+            		
+            		// get Minions that this object owns
+            		String[] myMinions = Overseer.getReceivers(getAgent(), 
+            							Overseer.TYPE_MINION, 
+            							Overseer.GET_RECEIVERS_ALL, 
+            							getAgent());
+            		num -= myMinions.length;
+            		System.out.println("spawn "+num+" to end up with "+content+" new minions! :)");
             		AgentContainer ct = getAgent().getContainerController();
-            		for(; counter<num; counter++){
-            			try {
-							ct.createNewAgent("minion"+id+":"+counter, "lab4.Minion",null).start();
-						} catch (StaleProxyException e) {
-							System.err.println("Spawner failed to create minion"+id+":"+counter);
-							e.printStackTrace();
-						}
+            		
+            		if(num>0) {// create agents because we have less than desired
+	            		for(int i=0; i<num; counter++, i++){
+	            			try {
+								AgentController newMinion = ct.createNewAgent("minion"+id+":"+counter, "lab4.Minion",new Object[]{getAgent()});
+								newMinion.start();
+							} catch (StaleProxyException e) {
+								System.err.println("Spawner failed to create minion"+id+":"+counter);
+								e.printStackTrace();
+							}
+	            		}
+            		}
+            		else if(num < 0){ // remove agents because we have more than desired
+            			sendMsgKill(myMinions, -num);
+            		} else {
             		}
             		break;
             	default:
