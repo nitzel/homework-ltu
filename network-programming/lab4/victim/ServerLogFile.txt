@@ -1,0 +1,26 @@
+Oct 18, 2015 4:15:17 PM se.ltu.netprog.javaprog.server.MainServer main
+INFO: ServerSocket was started on port 2223!
+Oct 18, 2015 4:15:29 PM se.ltu.netprog.javaprog.server.MainServer main
+INFO: Connection number 1 was given to a Thread
+Oct 18, 2015 4:15:59 PM se.ltu.netprog.javaprog.server.FibonacciCalculator run
+INFO: runnable fibonacci calcular 1 has finished his job
+Oct 18, 2015 4:17:46 PM se.ltu.netprog.javaprog.server.MainServer main
+INFO: Connection number 2 was given to a Thread
+Oct 18, 2015 4:17:47 PM se.ltu.netprog.javaprog.server.MainServer main
+INFO: Connection number 3 was given to a Thread
+Oct 18, 2015 4:17:47 PM se.ltu.netprog.javaprog.server.MainServer main
+INFO: Connection number 4 was given to a Thread
+Oct 18, 2015 4:17:48 PM se.ltu.netprog.javaprog.server.MainServer main
+INFO: Connection number 5 was given to a Thread
+Oct 18, 2015 4:17:48 PM se.ltu.netprog.javaprog.server.MainServer main
+INFO: Connection number 6 was given to a Thread
+Oct 18, 2015 4:18:16 PM se.ltu.netprog.javaprog.server.FibonacciCalculator run
+INFO: runnable fibonacci calcular 2 has finished his job
+Oct 18, 2015 4:18:17 PM se.ltu.netprog.javaprog.server.FibonacciCalculator run
+INFO: runnable fibonacci calcular 3 has finished his job
+Oct 18, 2015 4:18:17 PM se.ltu.netprog.javaprog.server.FibonacciCalculator run
+INFO: runnable fibonacci calcular 4 has finished his job
+Oct 18, 2015 4:18:18 PM se.ltu.netprog.javaprog.server.FibonacciCalculator run
+INFO: runnable fibonacci calcular 5 has finished his job
+Oct 18, 2015 4:18:18 PM se.ltu.netprog.javaprog.server.FibonacciCalculator run
+INFO: runnable fibonacci calcular 6 has finished his job

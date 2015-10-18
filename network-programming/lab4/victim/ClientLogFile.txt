@@ -1,0 +1,600 @@
+Oct 16, 2015 6:11:32 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 1
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 2
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 3
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 4
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 5
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 6
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 7
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 8
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 9
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 10
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 11
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 12
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 13
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 14
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 15
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 16
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 17
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 18
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 19
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 20
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 21
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 22
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 23
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 24
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 25
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 26
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 27
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 28
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 29
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 30
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 31
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 32
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 33
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 34
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 35
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 36
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 37
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 38
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 39
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 40
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 41
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 42
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 43
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 44
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 45
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 46
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 47
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 48
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 49
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 50
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 51
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 52
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 53
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 54
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 55
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 56
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 57
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 58
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 59
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 60
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 61
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 62
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 63
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 64
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 65
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 66
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 67
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 68
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 69
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 70
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 71
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 72
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 73
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 74
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 75
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 76
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 77
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 78
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 79
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 80
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 81
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 82
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 83
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 84
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 85
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 86
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 87
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 88
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 89
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 90
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 91
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 92
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 93
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 94
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 95
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 96
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 97
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 98
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 99
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 100
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 101
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 102
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 103
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 104
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 105
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 106
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 107
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 108
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 109
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 110
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 111
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 112
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 113
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 114
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 115
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 116
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 117
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 118
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 119
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 120
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 121
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 122
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 123
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 124
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 125
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 126
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 127
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 128
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 129
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 130
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 131
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 132
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 133
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 134
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 135
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 136
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 137
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 138
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 139
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 140
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 141
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 142
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 143
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 144
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 145
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 146
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 147
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 148
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 149
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 150
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 151
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 152
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 153
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 154
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 155
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 156
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 157
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 158
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 159
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 160
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 161
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 162
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 163
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 164
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 165
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 166
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 167
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 168
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 169
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 170
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 171
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 172
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 173
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 174
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 175
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 176
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 177
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 178
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 179
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 180
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 181
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 182
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 183
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 184
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 185
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 186
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 187
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 188
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 189
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 190
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 191
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 192
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 193
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 194
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 195
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 196
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 197
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 198
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 199
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 200
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 201
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 202
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 203
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 204
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 205
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 206
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 207
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 208
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 209
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 210
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 211
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 212
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 213
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 214
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 215
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 216
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 217
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 218
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 219
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 220
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 221
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 222
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 223
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 224
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 225
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 226
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 227
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 228
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 229
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 230
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 231
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 232
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 233
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 234
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 235
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 236
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 237
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 238
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 239
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 240
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 241
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 242
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 243
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 244
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 245
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 246
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 247
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 248
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 249
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 250
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 251
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 252
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 253
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 254
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 255
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 256
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 257
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 258
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 259
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 260
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 261
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 262
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 263
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 264
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 265
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 266
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 267
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 268
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 269
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 270
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 271
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 272
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 273
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 274
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 275
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 276
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 277
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 278
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 279
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 280
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 281
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 282
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 283
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 284
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 285
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 286
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 287
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 288
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 289
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 290
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 291
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 292
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 293
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 294
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 295
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 296
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 297
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 298
+Oct 16, 2015 6:11:33 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: Started Thread number 299
+Oct 16, 2015 9:24:41 PM se.ltu.netproj.javaprog.client.MainClient main
+INFO: MainClient is now finish
