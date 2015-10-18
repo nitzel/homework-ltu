@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.core.behaviours.CyclicBehaviour;
 
 import jade.domain.DFService;
@@ -54,7 +55,7 @@ public class Sender extends Agent{
 		gui.addListSentMouseListener(new MouseAdapter(){
 			@Override
 			public void mouseClicked(MouseEvent e){
-				if(e.getClickCount()==2){
+				if(e.getClickCount() == 2){
 					System.out.println(gui.getListSentSelected());
 					fillGuiWithMessage(gui.getListSentSelected().getMsg());
 				}
@@ -63,21 +64,55 @@ public class Sender extends Agent{
 		gui.addListReceivedMouseListener(new MouseAdapter(){
 			@Override
 			public void mouseClicked(MouseEvent e){
-				if(e.getClickCount()==2){
+				if(e.getClickCount() == 2){
 					System.out.println(gui.getListReceivedSelected());
 					fillGuiWithMessage(gui.getListReceivedSelected().getMsg());
 				}
 			}
 		});
     	
+		registerAgent();
         // receiver-behaviour to display received messages
-    	this.addBehaviour(new ReceiveMessage());
+    	this.addBehaviour(new ReceiveMessage(this,20));
+    	
     }
-	    
+    
+    /** 
+	 * Register actual Agent with the DF 
+	 * The DF is often compared to the "Yellow Pages" phone book. 
+	 * Agents wishing to advertize their services register with the DF. 
+	 * Visiting agents can then ask (search) the DF looking for agents which provide the services they desire. 
+	 */
+    protected void registerAgent(){
+	    DFAgentDescription dfd = new DFAgentDescription();
+	    ServiceDescription sd = new ServiceDescription();
+	    sd.setType("ReceiverAgent");
+        sd.setOwnership("ExampleReceiversOfJADE");
+        sd.addOntologies("ReceiverAgent");
+	    sd.setName(getName());
+	    dfd.setName(getAID());
+	    dfd.addServices(sd);
+	    try {
+	    	//register this agent to the "phone book"
+	    	DFService.register(this,dfd);
+	    } catch (FIPAException e) {
+	        System.err.println(getLocalName()+" registration with DF unsucceeded. Reason: "+e.getMessage());
+	        doDelete();
+	    }
+    }
+	
+    /**
+     * Return all different PERFORMATIVES available for a ACLMessage
+     * @return String containing all PERFORMATIVES available for a ACLMessage
+     */
 	protected String[] getPerformatives(){
 		return ACLMessage.getAllPerformativeNames();
 	}
 	
+	/**
+	 * Get all the Agents of Type ReceiverAgent
+	 * @return String[] containing all AgentNames of specific type
+	 */
 	protected String[] getReceivers(){
     	/*
     	http://www.iro.umontreal.ca/~vaucher/Agents/Jade/primer5.html
@@ -110,6 +145,10 @@ public class Sender extends Agent{
 	}
 	
 
+	/**
+	 * Fill the gui with an ACLMessage
+	 * @param msg Message which shall be shown from the gui
+	 */
     protected void fillGuiWithMessage(ACLMessage msg){
     	String senderName = msg.getSender().getName();
     	if(senderName.equals(this.getName())){
@@ -123,6 +162,14 @@ public class Sender extends Agent{
     	gui.setContentText(msg.getContent());
     }
 	
+    /**
+     * Send a message to the receiver
+     * OneShotBehaviour is an atomic behaviour that executes just once. This abstract class can
+     * be extended by application programmers to create behaviours for
+     * operations that need to be done just one time.
+     * @author cm
+     *
+     */
     protected class SendMessage extends OneShotBehaviour {
     	String receiverName;
         String content;
@@ -130,12 +177,15 @@ public class Sender extends Agent{
         
     	public SendMessage(String receiverName, String content, int performative){
     		super();
+    		if(receiverName == null) receiverName = "";
     		this.receiverName = receiverName;
     		this.content = content;
     		this.performative = performative;
     		System.out.println("sendMessage created");
     	}
-    	
+    	/**
+    	 * Action will be called when OneShotBehaviour is added as an behaviour to the agent
+    	 */
         public void action() {
     		System.out.println("sendMessage sending");
 
@@ -153,9 +203,18 @@ public class Sender extends Agent{
 
     }
 
-    protected class ReceiveMessage extends CyclicBehaviour {
-        public void action() {
-            ACLMessage msg = getAgent().blockingReceive(100);
+    /**
+     * Behaviour who receives a Message from other agents and adds the content to the Received part of the gui
+     * @author cm
+     *
+     */
+    protected class ReceiveMessage extends TickerBehaviour {
+        public ReceiveMessage(Agent a, long period) {
+			super(a, period);
+		}
+
+		public void onTick() {
+            ACLMessage msg = getAgent().receive();
             if(msg != null) {
                 gui.addToReceived(new ACLMessageToString(msg));//("From `"+senderName+"` as `"+messagePerformative+"`:"+messageContent);
             }

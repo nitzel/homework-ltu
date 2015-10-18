@@ -26,6 +26,7 @@ import javax.swing.ListSelectionModel;
  * A GUI to be used with the Sender-Agent.
  * It offers a wide interface to receive/alter the displayed and install listeners
  * to some of the widgets.
+ * Run with arguments -container -container-name SenderContainer "S1:lab3.Sender;S2:lab3.Sender"
  */
 public class SenderGUI {
 	/**
@@ -94,16 +95,29 @@ public class SenderGUI {
 	 */
 	public void setReceiverSelected(int id){
 		dropdownPerformative.select(id);
+
 	}
 	/**
 	 * @param item Item with this name will be selected.
 	 */
 	public void setReceiverSelected(String item){
 		// find 
+		boolean bFound = false;
 		for(int id = 0; id < dropdownReceiver.getItemCount(); id++){
 			if(dropdownReceiver.getItem(id).equals(item))
 				dropdownReceiver.select(id);
+				bFound = true;
 		}
+		
+		// if item is not part of the list -> add the item
+		if (bFound == false)
+		{
+			dropdownReceiver.add(item);
+			setReceiverSelected(item);
+			
+		}
+		
+
 	}
 	
 	
@@ -351,7 +365,6 @@ public class SenderGUI {
 					btnSend.doClick();
 				case KeyEvent.VK_ESCAPE:	// ESC: empty input field
 					textContent.setText("");
-					break;
 				}
 			}
 		});	

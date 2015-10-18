@@ -13,6 +13,9 @@ public class ACLMessageToString {
 		this.msg = msg;
 	}
 	
+	/**
+	 * get a nice String which contains all interesting information of a ACLMessage object
+	 */
 	public String toString(){
         String messagePerformative = ACLMessage.getPerformative(msg.getPerformative());
         String messageContent = msg.getContent();
@@ -23,6 +26,10 @@ public class ACLMessageToString {
         return "("+messagePerformative+")"+senderName+"→"+receiverName+":"+messageContent;
 	}
 
+	/**
+	 * Get the ACLMessage object
+	 * @return ACLMessage object which is used for communication between agents
+	 */
 	public ACLMessage getMsg() {
 		return msg;
 	}
