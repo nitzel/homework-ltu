@@ -10,24 +10,39 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
+/**
+ * A minion is a worker agent which takes tasks from an Overseer 
+ * to attack a target (open and close tcp connections) to test
+ * its behaviour under heavy load
+ * 
+ * Behaviours
+ * - Kills itself if the owner is dead
+ * - Receivs and deals with messages like
+ * 	- REQUEST:data Set target ("ip:port")
+ *  - INFORM:data Change interval("interval" in ms)
+ *  - CANCEL to delete the minion
+ * @author nitzel
+ */
 @SuppressWarnings("serial")
 public class Minion extends Agent{
 	protected BehaviourOpenTCPConnection tcpb;
-	protected Agent owner;
+	protected Agent owner;	// probably a MinionSpawner instance
 	
     protected void setup() {    	
         System.out.println("Hello World! My name is " + getAID().getLocalName());
 
         registerAgent();
         
+        // create and set behaviours
         tcpb = new BehaviourOpenTCPConnection(this, 1000, null, 2223);
-        addBehaviour(tcpb);
-        addBehaviour(new BehaviourReceiveMessage(this, 100));
-        addBehaviour(new BehaviourKillIfOwnerIsDead(this, 1000, owner));
+        addBehaviour(tcpb);	// the tcp attack behaviour
+        addBehaviour(new BehaviourReceiveMessage(this, 100)); // receiving and dealing with messages
+        addBehaviour(new BehaviourKillIfOwnerIsDead(this, 1000, owner)); 
     }
 
 	/** 
-	 * Registration with the DF 
+	 * Registration with the DF
+	 * also gets the owner via getArguments() and sets the membervar
 	 */
     protected void registerAgent(){
     	Object [] args = getArguments();
@@ -44,7 +59,6 @@ public class Minion extends Agent{
         sd.addOntologies(Overseer.TYPE_MINION);
 	    sd.setName(getName());
 	    if(owner!=null){
-	    	System.out.println("setting owner of "+getLocalName()+" to: " + owner.getName());
 	    	sd.setOwnership(owner.getName());
 	    }
 	    dfd.setName(getAID());
@@ -57,7 +71,7 @@ public class Minion extends Agent{
 	    }
     }
     /**
-     * if agent is stopped
+     * This is called when the agent is stopped. It then deregisters from the DF
      */
     @Override
     protected void takeDown(){
@@ -68,16 +82,20 @@ public class Minion extends Agent{
     }
     
     /**
-     * What to do on the receival of a message
-     * @author nitzel
-     *
+     * This message checks every X seconds for new messages
+     * The types are mentioned in the class description
      */
     protected class BehaviourReceiveMessage extends TickerBehaviour {
 		
     	public BehaviourReceiveMessage(Agent a, long period) {
 			super(a, period); // 100msec between the calls
 		}
-
+    	/**
+    	 * onTick checks for a new message and executes the task it contains
+    	 * - attack a target / stop attack
+    	 * - set interval
+    	 * - delete agent
+    	 */
 		public void onTick() {
             //Receive a Message
             ACLMessage msg = receive();
@@ -93,14 +111,12 @@ public class Minion extends Agent{
             		}
             		try {
 						tcpb.setTarget(target[0], Integer.parseInt(target[1]));
-						//tcpb.restart();
 					} catch (NumberFormatException e) {
 						System.err.println("Minion can't parse port: `"+target[1]+"`");
 					}
             		break;
             	case ACLMessage.INFORM: // new interval
             		int interval = Integer.parseInt(content);
-            		System.out.println(getAgent().getLocalName()+" changed period to "+interval);
             		tcpb.reset(interval);
             		break;
             	case ACLMessage.CANCEL: // stop attack, delete agent
@@ -114,8 +130,10 @@ public class Minion extends Agent{
     }
     
     /**
-     * checks if there it's spawner is still around
+     * checks if it's spawner is still around
      * if not, the agent kills itself
+     * 
+     * Owner can be null
      * @author nitzel
      *
      */
@@ -135,22 +153,26 @@ public class Minion extends Agent{
     }
     
     /**
-     * Opens a tcp connection :)
-     * Is runnable to be non-blocking
+     * Opens and closes tcp connection :)
+     * Is runnable to be non-blocking while 
      * @author nitzel
      *
      */
     protected class BehaviourOpenTCPConnection extends TickerBehaviour implements Runnable{
     	String target;
     	int targetPort;
-    	//java.util.Vector<Socket> sockets; // list of open connections
+    	//java.util.Vector<Socket> sockets; // list of open connections // must be closed onEnd()
     	public BehaviourOpenTCPConnection(Agent agent, long period, String target, int targetPort) {
 			super(agent, period);
 
 			//sockets = new java.util.Vector<>();
 			this.setTarget(target, targetPort);
 		}
-    	
+    	/**
+    	 * 
+    	 * @param target new target to attack. use null or emptystring to halt attack
+    	 * @param targetPort targets port
+    	 */
     	public void setTarget(String target, int targetPort){
     		this.onEnd(); // clear all connections
 			this.target = target;
@@ -162,6 +184,9 @@ public class Minion extends Agent{
 			new Thread(this).start();
 		}
 
+		/**
+		 * Opens a socket to target and closes it then
+		 */
 		@Override
 		public void run() {
 			if(target == null || target.length()==0) return;
@@ -172,16 +197,6 @@ public class Minion extends Agent{
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 
-		}
-		
-		@Override
-		public int onEnd(){
-			/*for(Socket s : sockets){ // close all open sockets
-				try {
-					s.close();
-				} catch (IOException e) {}
-			}*/
-			return 0;
 		}
     }
 }

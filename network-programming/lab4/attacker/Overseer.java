@@ -108,10 +108,7 @@ public class Overseer extends Agent{
     	if(receivers.length==0){
     		System.err.println("no spawners");
     		return 0;
-    	}
-    	//int numPerSpawner = num/receivers.length;
-    	//sendMsg(ACLMessage.REQUEST, receivers, numPerSpawner+"");
-    	
+    	}    	
     	
     	// spread evenly on spawners
     	for(int i = receivers.length; i>0; i--){
@@ -125,16 +122,11 @@ public class Overseer extends Agent{
     	return num; //numPerSpawner*receivers.length;
     }
     protected void sendMsgInterval(int interval){
-    	String[] receivers = getReceivers(this, Overseer.TYPE_MINION);
+    	String[] receivers = getReceivers(this, Overseer.TYPE_SPAWNER);
     	sendMsg(ACLMessage.INFORM, receivers, interval+"");
     }
-    
-    protected void sendMsgKill(int num){
-    	String[] receivers = getReceivers(this, Overseer.TYPE_MINION, num);
-    	sendMsg(ACLMessage.CANCEL, receivers, null);
-    }
     protected void sendMsgTarget(String target){
-    	String[] receivers = getReceivers(this, Overseer.TYPE_MINION);
+    	String[] receivers = getReceivers(this, Overseer.TYPE_SPAWNER);
     	sendMsg(ACLMessage.PROPAGATE, receivers, target);
     }
     protected void sendMsg(int performative, String receiver, String content){
