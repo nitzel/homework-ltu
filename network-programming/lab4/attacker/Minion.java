@@ -11,9 +11,10 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
 /**
- * A minion is a worker agent which takes tasks from an Overseer 
+ * A Minion is a worker agent which takes tasks from anyone 
+ * - usually an Overseer or the MinionSpawner owning it - 
  * to attack a target (open and close tcp connections) to test
- * its behaviour under heavy load
+ * its behavior under heavy load
  * 
  * Behaviours
  * - Kills itself if the owner is dead
@@ -26,7 +27,8 @@ import jade.lang.acl.ACLMessage;
 @SuppressWarnings("serial")
 public class Minion extends Agent{
 	protected BehaviourOpenTCPConnection tcpb;
-	protected Agent owner;	// probably a MinionSpawner instance
+	/** Agent owning this one, probably a MinionSpawner */
+	protected Agent owner;	
 	
     protected void setup() {    	
         System.out.println("Hello World! My name is " + getAID().getLocalName());

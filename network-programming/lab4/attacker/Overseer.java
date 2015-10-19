@@ -22,18 +22,23 @@ import jade.lang.acl.ACLMessage;
  */
 
 /**
- * coordinates the attacking minions and creates new
+ * The Overseer commands the behavior of the Minions via the MinionSpawners.
+ * It tells these who rest in the middle of the communication chain 
+ * to do and they obey and create/delete minions and forward the tasks,
+ * making sure the Overseers wishes shall be fulfilled.
  * @author nitzel
- *
  */
 @SuppressWarnings("serial")
 public class Overseer extends Agent{
-	public static String TYPE_MINION = "minion";
-	public static String TYPE_SPAWNER = "nefario";
-	public static String TYPE_OVERSEER = "gru";
+	/** constant to set the types of the agents in the DF*/
+	public static String TYPE_MINION = "minion"
+						,TYPE_SPAWNER = "nefario"
+						,TYPE_OVERSEER = "gru";
+	/** constant for the getReceivers method to declare that max=infinity */
 	public static int GET_RECEIVERS_ALL = -1;
 	protected OverseerGUI gui;
-	protected int spawnerNum = 0;
+	/** kept up to date but not used for anything till now */
+	protected int spawnerNum = 0; 
 	
     protected void setup() {
         // setup GUI
@@ -53,12 +58,12 @@ public class Overseer extends Agent{
 					System.out.println("stopping");
 					sendMsgTarget(":0");
 					break;
-				case OverseerGUI.CMD_SET_MINIONS:
+				case OverseerGUI.CMD_SET_MINIONS: // amount of minions shall be changed, send msg to the spawners
 					int newAmount = gui.getNew();
 					System.out.println("setting minionAmount to "+newAmount);
 					sendMsgSpawn(newAmount);
 					break;
-				case OverseerGUI.CMD_SET_INTERVAL:
+				case OverseerGUI.CMD_SET_INTERVAL:	// interval between attacks shall be changed, send msg to minions via spawners
 					int newInterval = gui.getInterval();
 					System.out.println("setting minion interval to "+newInterval);
 					sendMsgInterval(newInterval);
@@ -66,15 +71,14 @@ public class Overseer extends Agent{
 				}
 			}
     	});
+    	// what to do when the gui is closed
     	gui.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e){
 				doDelete();
 			}
 		});
-    	
-        ReceiveMessageBehaviour rm = new ReceiveMessageBehaviour(this, 10);
-        addBehaviour(rm);    
+    	// keeping gui info up to date (counting minions and spawners)
         addBehaviour( new UpdateBehaviour(this,1000));
         
         registerAgent();
@@ -101,7 +105,7 @@ public class Overseer extends Agent{
     }
     /**
      * @param num Minions to have per spawner
-     * @return spawned minions
+     * @return number of spawned minions - dont rely on this number
      */
     protected int sendMsgSpawn(int num){
     	String[] receivers = getReceivers(this, Overseer.TYPE_SPAWNER);
@@ -121,17 +125,37 @@ public class Overseer extends Agent{
     	
     	return num; //numPerSpawner*receivers.length;
     }
+    /**
+     * Sends a message to all minions via their spawners to set a new interval
+     * @param interval The period to wait between attacks
+     */
     protected void sendMsgInterval(int interval){
     	String[] receivers = getReceivers(this, Overseer.TYPE_SPAWNER);
     	sendMsg(ACLMessage.INFORM, receivers, interval+"");
     }
+    /**
+     * Sends a message to all minions via their spawners to set a new target
+     * @param target A string ip:port for the new target, can also use DNS:port
+     */
     protected void sendMsgTarget(String target){
     	String[] receivers = getReceivers(this, Overseer.TYPE_SPAWNER);
     	sendMsg(ACLMessage.PROPAGATE, receivers, target);
     }
+    /**
+     * General purpose message-sending method to send a message (performative, content) to one receiver
+     * @param performative
+     * @param content
+     * @param receiver GUID of the receiver
+     */
     protected void sendMsg(int performative, String receiver, String content){
     	sendMsg(performative, new String[]{receiver}, content);
     }
+    /**
+     * General purpose message-sending method to send a message (performative, content) to an array of receivers
+     * @param performative
+     * @param content
+     * @param receivers - String array with the names of the receivers (GUIDs)
+     */
     protected void sendMsg(int performative, String[] receivers, String content){
         ACLMessage msg = new ACLMessage(performative);
         for(String receiver : receivers){
@@ -142,22 +166,40 @@ public class Overseer extends Agent{
         
         send(msg);
     }
-    
+    /**
+     * @param agent The agent starting the search
+     * @param type Type of the agents you are looking fore
+     * @return All Agent fitting the description. Set parameters to null to ignore them
+     */
     static public String[] getReceivers(Agent agent, String type){
     	return getReceivers(agent, type, Overseer.GET_RECEIVERS_ALL, null, null);
     }
+    /**
+     * @param agent The agent starting the search
+     * @param type Type of the agents you are looking fore
+     * @param max Maximum amount of results
+     * @return All Agent fitting the description. Set parameters to null to ignore them
+     */
     static public String[] getReceivers(Agent agent, String type, int max){
     	return getReceivers(agent, type, max, null, null);
     }
+    /**
+     * @param agent The agent starting the search
+     * @param type Type of the agents you are looking fore
+     * @param max Maximum amount of results
+     * @param owner All the Agents to be found need to have .setOwnership(owner.getName())
+     * @return All Agent fitting the description. Set parameters to null to ignore them
+     */
     static public String[] getReceivers(Agent agent, String type, int max, Agent owner){
     	return getReceivers(agent, type, max, owner, null);
     }
     /**
-     * 
-     * @param type
-     * @param max Maximum amount of receivers to be returned. max=-1 takes all
-     * @param owner The one to own the search clients
-     * @return
+     * @param agent The agent starting the search
+     * @param type Type of the agents you are looking fore
+     * @param max Maximum amount of results
+     * @param owner All the Agents to be found need to have .setOwnership(owner.getName())
+     * @param name Name of the agent you are looking for
+     * @return All Agent fitting the description. Set parameters to null to ignore them
      */
 	static public String[] getReceivers(Agent agent, String type, int max, Agent owner, String name){
     	/*
@@ -202,32 +244,29 @@ public class Overseer extends Agent{
 		}
 		return result;
 	}
-
+	/**
+	 * When the Agent is deleted, it will deregister and close the GUI
+	 */
     public void takeDown(){
         try {  // deregister
         	DFService.deregister(this); 
     	}catch (Exception e) {}
         gui.close();
     }
-    public class ReceiveMessageBehaviour extends TickerBehaviour {
-        
-    	public ReceiveMessageBehaviour(Agent a, long period) {
-			super(a, period);
-		}
-
-		@Override
-    	public void onTick() {
-            //Receive a Message
-            ACLMessage msg = receive();
-            if(msg != null) {
-            }
-        }
-    }
+    /**
+     * - see how many minions are registered
+     * - see how many spawners are registered
+     * it will update the GUI with this information
+     * @author nitzel
+     */
     public class UpdateBehaviour extends TickerBehaviour {
 		public UpdateBehaviour(Agent a, long period) {
 			super(a, period);
 		}
 
+		/**
+		 * count minions & spawners and update gui
+		 */
 		@Override
 		protected void onTick() {
 			int spawnerNumNew = getReceivers(getAgent(), TYPE_SPAWNER).length;

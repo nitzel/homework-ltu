@@ -15,8 +15,9 @@ import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
 /**
- * The minionspawner is an agent that waits for commands from the 
- * Overseer to then create/delete new Minions.
+ * The MinionSpawner is an agent that waits for commands from the 
+ * Overseer to then create/delete new Minions or forward 
+ * tasks to the minions it owns.
  * @author nitzel
  *
  */

@@ -22,11 +22,17 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * A simple gui for the needs of an Overseer
+ * @author nitzel
+ */
 public class OverseerGUI {
-	public static final String CMD_SET_TARGET = "settarget";
-	public static final String CMD_PAUSE_ATTACK = "pauseattack";
-	public static final String CMD_SET_MINIONS = "setminions";
-	public static final String CMD_SET_INTERVAL = "setinterval";
+	/** constant for action-commands for the buttons so 
+	 * that the actionlistener can see which caused the event */
+	public static final String 	CMD_SET_TARGET = "settarget",
+								CMD_PAUSE_ATTACK = "pauseattack",
+								CMD_SET_MINIONS = "setminions",
+								CMD_SET_INTERVAL = "setinterval";
 
 	private JFrame frmWhateversOverseer;
 	private JTextField textTarget;
@@ -58,14 +64,17 @@ public class OverseerGUI {
 	}
 
 	
-	
+	/**
+	 * Add a windowlistener to the frame behind the gui
+	 * @param w WindowListener/Adapter
+	 */
 	public void addWindowListener(WindowListener w){
 		frmWhateversOverseer.addWindowListener(w);
 	}
 	
 	/**
 	 * Add one actionListener to the 2 buttons and sets their ActionCommand to update/send/cancel
-	 * @param a the ActionListener for all 2 buttons
+	 * @param a the ActionListener for all 4 buttons
 	 */
 	public void addButtonActionListener(ActionListener a){
 		btnSetTarget.addActionListener(a);
@@ -92,6 +101,10 @@ public class OverseerGUI {
 	public void setTarget(String content){
 		textTarget.setText(content);
 	}
+	/**
+	 * Set the text of the spawner-num label
+	 * @param content
+	 */
 	public void setSpawnernum(String content){
 		lblSpawnernum.setText(content);
 	}
@@ -133,15 +146,15 @@ public class OverseerGUI {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialize the contents of the frame and some of their eventListeners
 	 */
 	private void initialize() {
 		frmWhateversOverseer = new JFrame();
 		frmWhateversOverseer.setTitle("Whatevers overseer");
-		frmWhateversOverseer.setBounds(100, 100, 521, 178);
+		frmWhateversOverseer.setBounds(100, 100, 606, 178);
 		frmWhateversOverseer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 77, 0, 0};
+		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -187,6 +200,7 @@ public class OverseerGUI {
 		btnHalt = new JButton("HALT");
 		btnHalt.setToolTipText("Click to pause attack");
 		GridBagConstraints gbc_btnHalt = new GridBagConstraints();
+		gbc_btnHalt.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnHalt.insets = new Insets(0, 0, 5, 0);
 		gbc_btnHalt.gridx = 8;
 		gbc_btnHalt.gridy = 0;
@@ -201,7 +215,7 @@ public class OverseerGUI {
 		
 		lblSpawnernum = new JLabel("SpawnerNum");
 		GridBagConstraints gbc_lblSpawnernum = new GridBagConstraints();
-		gbc_lblSpawnernum.anchor = GridBagConstraints.EAST;
+		gbc_lblSpawnernum.anchor = GridBagConstraints.WEST;
 		gbc_lblSpawnernum.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSpawnernum.gridx = 1;
 		gbc_lblSpawnernum.gridy = 1;
@@ -229,8 +243,8 @@ public class OverseerGUI {
 		btnSetInterval = new JButton("set");
 		btnSetInterval.setToolTipText("Set the interval between attacks of the minions");
 		GridBagConstraints gbc_btnSetInterval = new GridBagConstraints();
-		gbc_btnSetInterval.gridwidth = 2;
 		gbc_btnSetInterval.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnSetInterval.gridwidth = 2;
 		gbc_btnSetInterval.insets = new Insets(0, 0, 5, 0);
 		gbc_btnSetInterval.gridx = 7;
 		gbc_btnSetInterval.gridy = 1;
@@ -359,8 +373,8 @@ public class OverseerGUI {
 		});
 		btnSetNumber.setToolTipText("sets the new amount of minion to desired");
 		GridBagConstraints gbc_btnSetNumber = new GridBagConstraints();
-		gbc_btnSetNumber.gridwidth = 2;
 		gbc_btnSetNumber.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnSetNumber.gridwidth = 2;
 		gbc_btnSetNumber.gridx = 7;
 		gbc_btnSetNumber.gridy = 3;
 		frmWhateversOverseer.getContentPane().add(btnSetNumber, gbc_btnSetNumber);
