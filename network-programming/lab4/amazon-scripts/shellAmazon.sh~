@@ -1,0 +1,3 @@
+#/bin/sh
+ssh -i "/home/cm/Documents/15_LP1_KEY_D7001D_icoami-5.pem" ec2-user@52.30.89.73
+

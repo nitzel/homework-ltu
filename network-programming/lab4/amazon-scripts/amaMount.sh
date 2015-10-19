@@ -1,0 +1,16 @@
+#/bin/sh
+# sudo apt-get install sshfs
+
+#add yourself to the fuse user group otherwise you will get a “permission denied” error later down the road
+#sudo usermod -a -G fuse cm
+
+#Create a folder on your machine to be used as the mount point for the Amazon EC2 drive
+#mkdir ~/amazon
+
+#Make yourself owner of this folder
+# sudo chown cm:fuse ~/amazon
+
+#And finally mount your EC2 drive to the location. We will use the Amazon identity file. If you run the command without “-o IdentityFile,” remote machine will return “Connection reset by peer”
+IP=$(head -n 1 ~/Documents/amazon-scripts/serverip)
+sshfs -o IdentityFile=/home/cm/Documents/15_LP1_KEY_D7001D_icoami-5.pem  ec2-user@$IP:/home/ec2-user ~/amazon
+

@@ -1,0 +1,2 @@
+#/bin/sh
+rsync --numeric-ids --delete -avz -e "ssh -i /home/cm/Documents/15_LP1_KEY_D7001D_icoami-5.pem" ~/workspace/Lab3_LoadBalancing/ amazon@jtf.at:/home/amazon/server/ 

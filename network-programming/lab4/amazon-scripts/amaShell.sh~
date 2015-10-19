@@ -1,0 +1,4 @@
+#/bin/bash
+IP=$(head -n 1 ~/Documents/amazon-scripts/serverip)
+ssh -i "/home/cm/Documents/15_LP1_KEY_D7001D_icoami-5.pem" ubuntu@$IP
+
