@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <style type="text/css">
+    html { height: 100% }
+    body { height: 100%; margin: 0; padding: 0 }
+    #map_canvas { height: 100% }
+  </style>
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <script type="text/javascript">
+  function initialize() {
+    var myOptions = {
+      center: new google.maps.LatLng(51.805,10.335),
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.SATELLITE
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"),  myOptions);
+    var marker = new google.maps.Marker({ position: new google.maps.LatLng(51.804013, 10.333978), map: map, title: "Luleå tekniska universitet" });
+    var infowindow = new google.maps.InfoWindow({
+      content: '\
+      <a href="https://de.wikipedia.org/wiki/Marktkirche_zum_Heiligen_Geist_(Clausthal-Zellerfeld)">\
+        Marktkirche Clausthal\
+      <a/><br />\
+      Tysklands största träkyrka<br />\
+      <img src="http://www.marktkirche-clausthal.de/Bilder/Clausthal-Kirche-Zum-heiligen-Geist_Ref2014-02.jpg" width="100px">'
+    });
+    
+    google.maps.event.addListener(marker, 'click', function(){infowindow.open(map,marker)})
+  
+  }
+  </script>
+</head>
+<body onload="initialize()">
+  <div id="map_canvas" style="width:100%; height:100%"></div>
+</body>
+</html>

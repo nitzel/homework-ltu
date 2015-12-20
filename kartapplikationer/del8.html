@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <style>
+      #map {
+        height: 500px;
+        width: 1024px;
+      }
+      iframe, #info {
+        width: 100%;
+      }
+      .ol-attribution a {
+        color: black;
+      }
+    </style>
+    <title>Del 8 mixing up</title>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="L.TileLayer.BetterWMS.js"></script>
+  </head>
+  <body>
+    <h3>Slutlaboration med Leaflet</h3>
+    <div id="map"></div>
+    <button onClick='locate(this)'>Locate</button>
+    <button onClick='map.setView({lat: 65.62953205102933, lng: 22.10002899169922},13)'>View Lulea and Kyrkbyn</button>
+    <button onClick='for(layer in overlayMaps)if(overlayMaps[layer].setOpacity)overlayMaps[layer].setOpacity(0.3);'>Translucent overlays</button>
+    <button onClick='for(layer in overlayMaps)if(overlayMaps[layer].setOpacity)overlayMaps[layer].setOpacity(1);'>Opaque overlays</button>
+    <script type="text/javascript">
+    /** TODO
+     - DONE >= background layers
+     - DONE bg layers able to turn on/off
+     - DONE Other layer(s) from OSM, nicely styled  
+     - DONE polys with BID in other color
+     - DONE show BIDs
+     - DONE? Anropa lagren från kartapplikationen, dvs lägg till de intressanta lagren från Openstreetmap samt kartinformationen med de inventerade byggnaderna som lager i applikationen. De ska vara tänd- och släckbara, stilpoäng om det går att välja genomskinlighet dynamiskt.
+     - DONE GetFeatureInfo: look up right image/info depending on BID and display it in an popup
+     - set zoomniveau to show lulea + kyrkbyn
+    */
+      // the base layers
+      var baseMaps  = {
+        //OSM
+        "OSM" : L.tileLayer(
+          'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+          {
+            maxZoom: 19, 
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          }
+        ),
+        // Watercolor styled OSM
+        "Watercolor" : L.tileLayer(
+          'http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', 
+          {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            subdomains: 'abcd',
+            minZoom: 1,
+            maxZoom: 16,
+            ext: 'png'
+          }
+        ),
+        "Esri World Street Map" : L.tileLayer(
+          'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', 
+          {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+          }
+        ),
+        "OpenCycleMap": L.tileLayer(
+          'http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png', 
+          {
+          attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          }
+        ),
+      };
+      // the overlay layers
+      var overlayMaps = {
+        // kyrkbyn streets
+        "Kyrkbyn Streets" : L.tileLayer.wms(
+          "http://localhost:8080/geoserver/wms", 
+          {
+            layers: 'NaturalEarth:vagkontur',
+            format: 'image/png',
+            transparent: true,
+            version: '1.1.0',
+            attribution: 'overlay-styles by jan'
+          }
+        ),
+        // kyrkbyn buildings
+        // betterWms from https://gist.github.com/rclark/6908938#file-l-tilelayer-betterwms-js
+        // to support getFeatureInfo
+        "Kyrkbyn Buildings" : L.tileLayer.betterWms( // betterWms
+        "http://localhost:8080/geoserver/wms", 
+        {
+          layers: 'NaturalEarth:Byggnader_kyrkbyn',
+          format: 'image/png',
+          transparent: true,
+          version: '1.1.0',
+          maxZoom: 20,
+          attribution: 'overlay-styles by jan'
+        }),
+        // kyrkbyn property areas
+        "Kyrkbyn Properties" : L.tileLayer.wms(
+        "http://localhost:8080/geoserver/wms", 
+        {
+          layers: 'NaturalEarth:Fastighetsgranser',
+          format: 'image/png',
+          transparent: true,
+          version: '1.1.0',
+          attribution: 'overlay-styles by jan'
+        }),
+        // Bjoerkskatan areas
+        "Björkskatan Areas" : L.tileLayer.wms(
+        "http://localhost:8080/geoserver/wms", 
+        {
+          layers: 'lab4:bjorkskatan_poly',
+          format: 'image/png',
+          transparent: true,
+          version: '1.1.0',
+          attribution: 'overlay-styles by jan'
+        }),
+        // bjoerkskatan streets
+        "Björkskatan Streets" : L.tileLayer.wms(
+          "http://localhost:8080/geoserver/wms", 
+          {
+            layers: 'lab4:bjorkskatan_line',
+            format: 'image/png',
+            transparent: true,
+            version: '1.1.0',
+            attribution: 'overlay-styles by jan'
+          }
+        )
+      }   
+    
+      var map = L.map('map', 
+                { center: {lat: 65.64505764789625, lng: 22.029175758361816},
+                  zoom: 17,
+                  maxZoom: 20,
+                  layers:  [baseMaps["Watercolor"], overlayMaps["Kyrkbyn Buildings"], overlayMaps["Björkskatan Areas"]],
+                });
+      
+      L.control.layers(baseMaps, overlayMaps).addTo(map);
+      
+      // Marker & Popupt for visualization of geolocation
+      var locationMarker = L.marker().bindPopup('This is you!');
+      // Clicking the locate/stop locating button
+      function locate(btn){
+        if(btn.textContent=='Locate'){
+          // http://leafletjs.com/reference.html#map-locate-options
+          map.locate({watch:true,maximumAge:2000,enableHighAccuracy:true, setView:true});
+          btn.textContent = 'Stop locating';
+        } else {
+          map.stopLocate();
+          map.removeLayer(locationMarker);
+          btn.textContent='Locate'
+        }
+      }
+      // when the geolocation was found
+      // http://leafletjs.com/reference.html#location-event
+      map.on('locationfound',function(ev){ 
+        locationMarker
+        .setLatLng(ev.latlng)
+        .addTo(map);
+      });      
+      // if geolocation could not be found
+      // http://leafletjs.com/reference.html#location-event
+      map.on('locationerror',function(ev){
+        btn.textContent = "does not work: "+ev.message;
+      });
+    </script>
+  </body>
+</html>

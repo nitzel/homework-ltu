@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./ol/css/ol.css" type="text/css">
+    <style>
+      #map {
+        height: 400px;
+        width: 756px;
+      }
+      iframe, #info {
+        width: 100%;
+      }
+      .ol-attribution a {
+        color: black;
+      }
+    </style>
+    <title>OpenLayers Lab</title>
+    <script src="ol/examples/loader.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <h3>Björkskatan</h3>
+    <div id="map"></div>
+    <div id='config'>
+    </div>
+    <div id="info"></div>
+    <script type="text/javascript">
+      // the layers
+      var layers  = [
+          new ol.layer.Tile({ // OpenStreetMap
+            title: 'OSM Global',
+            source: new ol.source.OSM()
+          }),
+          new ol.layer.Tile({ // local streets
+            title: 'Streets of Björkskatan',
+            source: new ol.source.TileWMS({
+              url: 'http://localhost:8080/geoserver/wms',
+              params: {LAYERS: 'lab4:bjorkskatan_line', VERSION: '1.1.1'}
+            })
+          }),
+          new ol.layer.Tile({ // local streets
+            title: 'Areas&Buildings of Björkskatan',
+            source: new ol.source.TileWMS({
+              url: 'http://localhost:8080/geoserver/wms',
+              params: {LAYERS: 'lab4:bjorkskatan_poly', VERSION: '1.1.1'}
+            })
+          })
+        ];
+    
+      // create the checkboxes and add click-callbacks to them
+      var doc = document;
+      var cfg = document.getElementById('config');
+      for(i = 0; i<layers.length; i++){
+        var id = 'checkbox'+i;
+      
+        var checkbox = doc.createElement('input');
+        checkbox.setAttribute('id',id);
+        checkbox.setAttribute('layerId',i);
+        checkbox.setAttribute('type','checkbox')
+        checkbox.setAttribute('checked','checked');
+        
+        var label = doc.createElement('label');
+        label.setAttribute('for',id);
+        
+        label.appendChild(checkbox);
+        label.innerHTML += layers[i].get('title');
+        
+        cfg.appendChild(label);
+        
+        // add onclick listener to the checkbox
+        document.getElementById(id).onclick = function(e){
+          var target = e.target;
+          layers[target.getAttribute('layerId')].setVisible(target.checked);
+        };
+        //<label for="visible0">
+        //<input id="visible0" class="visible" type="checkbox"/>visibility</label>
+      
+      }
+      
+      var map = new ol.Map({
+        target: 'map',
+        layers: layers,
+        view: new ol.View({
+          //projection: 'EPSG:4326',
+          center: [2468519.4965269635, 9772044.107975679], //ol.proj.fromLonLat([22.02707734298706, 65.64554214477539]),
+          zoom: 15,
+        }),
+        controls: ol.control.defaults({
+          attributionOptions: {
+            collapsible: false
+          }
+        })
+      });
+      
+      // featureselect
+      // from http://openlayers.org/en/master/examples/getfeatureinfo-tile.html
+      map.on('singleclick', function(evt) {
+        document.getElementById('info').innerHTML = '';
+        var viewResolution = /** @type {number} */ (map.getView().getResolution());
+        // find topmost visible layer that supports the getGetEatureInfo request
+        // if non is visible, fall back to layer 2 = bj;rkskatan-houses;
+        var topLayer = layers[2];
+        layers.forEach(function(layer){
+          if(layer.getVisible() && layer.getSource().getGetFeatureInfoUrl) topLayer = layer;
+        });
+        // execute the getGetFeatureInfo request and display it in an iframe
+        var url = topLayer.getSource().getGetFeatureInfoUrl(
+              evt.coordinate, 
+              viewResolution, 
+              map.getView().getProjection(),
+              {'INFO_FORMAT': 'text/html'}
+            );
+        if (url) {
+          document.getElementById('info').innerHTML =
+              '<iframe seamless src="' + url + '"></iframe>';
+        }
+      });
+      
+      // Geolocational stuff
+      // from http://openlayers.org/en/master/examples/geolocation.html
+      // creates a feature = point on the map indicating the current position
+      var positionFeature = new ol.Feature();
+      positionFeature.setStyle(new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: 6,
+          fill: new ol.style.Fill({
+            color: '#f00'
+          }),
+          stroke: new ol.style.Stroke({
+            color: 'white',
+            width: 2
+          })
+        })
+      }));
+      // the overlay to display the feature
+      var featuresOverlay = new ol.layer.Vector({
+        map: map,
+        source: new ol.source.Vector({
+          features: [positionFeature]
+        })
+      });
+      // the geolocation object used for tracking the position
+      var geolocation = new ol.Geolocation({
+        projection: map.getView().getProjection()
+      });
+      geolocation.setTracking(true);
+      // when the position changes, we'll change the position of the feature
+      geolocation.on('change:position', function() {
+        var coordinates = geolocation.getPosition();
+        positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
+      });
+    </script>
+  </body>
+</html>
